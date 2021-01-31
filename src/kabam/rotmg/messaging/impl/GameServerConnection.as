@@ -112,6 +112,7 @@ public class GameServerConnection {
    public static const NEW_CHARACTER_INFORMATION:int = 108;
    public static const UNLOCK_INFORMATION:int = 109;
    public static const QUEUE_INFORMATION:int = 112;
+   public static const TEST113:int = 113;
    public static const EXALTATION_UPDATE:int = 114;
    public static const EXALTATION_CLAIM:int = 115;
    public static const VAULT_UPDATE:int = 117;
@@ -302,9 +303,6 @@ public class GameServerConnection {
    public function reskin(param1:Player, param2:int) : void {
    }
 
-   public function fakeDeath() : void {
-   }
-
    public function changePetSkin(param1:int, param2:int, param3:int) : void {
    }
 
@@ -312,7 +310,12 @@ public class GameServerConnection {
    }
 
    public function exaltationClaim(item:int) : void {
+   }
 
+   public function forgeRequest(item:int, offers:Vector.<SlotObjectData>) : void {
+   }
+
+   public function test113() : void {
    }
 }
 }

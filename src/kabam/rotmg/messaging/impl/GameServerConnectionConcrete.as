@@ -1,5 +1,6 @@
 package kabam.rotmg.messaging.impl {
 import com.company.assembleegameclient.game.AGameSprite;
+import com.company.assembleegameclient.game.GameSprite;
 import com.company.assembleegameclient.game.MoveRecords;
 import com.company.assembleegameclient.game.events.GuildResultEvent;
 import com.company.assembleegameclient.game.events.KeyInfoResponseSignal;
@@ -224,6 +225,7 @@ import kabam.rotmg.messaging.impl.outgoing.SetCondition;
 import kabam.rotmg.messaging.impl.outgoing.ShootAck;
 import kabam.rotmg.messaging.impl.outgoing.SquareHit;
 import kabam.rotmg.messaging.impl.outgoing.Teleport;
+import kabam.rotmg.messaging.impl.outgoing.Test113;
 import kabam.rotmg.messaging.impl.outgoing.UseItem;
 import kabam.rotmg.messaging.impl.outgoing.UsePortal;
 import kabam.rotmg.messaging.impl.outgoing.arena.EnterArena;
@@ -649,9 +651,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
    }
 
    override public function usePortal(param1:int) : void {
-      if(Parameters.usingPortal) {
-         Parameters.portalID = param1;
-      }
       var _loc3_:UsePortal = this.messages.require(47) as UsePortal;
       _loc3_.objectId_ = param1;
       serverConnection.sendMessage(_loc3_);
@@ -776,9 +775,21 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       serverConnection.sendMessage(_loc3_);
    }
 
+   override public function test113() : void {
+      var pkt:Test113 = this.messages.require(TEST113) as Test113;
+      serverConnection.sendMessage(pkt);
+   }
+
    override public function exaltationClaim(item:int) : void {
       var pkt:ExaltationClaim = this.messages.require(EXALTATION_CLAIM) as ExaltationClaim;
       pkt.item = item;
+      serverConnection.sendMessage(pkt);
+   }
+
+   override public function forgeRequest(item:int, offers:Vector.<SlotObjectData>) : void {
+      var pkt:ForgeRequest = this.messages.require(FORGE_REQUEST) as ForgeRequest;
+      pkt.itemId = item;
+      pkt.offers = offers;
       serverConnection.sendMessage(pkt);
    }
 
@@ -788,15 +799,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       _loc4_.skinType = param2;
       _loc4_.currency = param3;
       serverConnection.sendMessage(_loc4_);
-   }
-
-   override public function fakeDeath() : void {
-      this.addTextLine.dispatch(ChatMessage.make("",this.player.name_ + " died at level " + this.player.level_ + ", killed by Epic Prank"));
-      var _loc1_:BitmapData = new BitmapData(gs_.stage.stageWidth,gs_.stage.stageHeight,true,0);
-      _loc1_.draw(gs_);
-      setBackground(_loc1_);
-      this.escape();
-      this.disconnect();
    }
 
    override public function questFetch() : void {
@@ -908,11 +910,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.map(53).toMessage(ReskinPet);
       map.map(3).toMessage(ClaimDailyRewardMessage);
       map.map(33).toMessage(ChangePetSkin);
-      map.map(EXALTATION_UPDATE).toMessage(ExaltationUpdate);
       map.map(EXALTATION_CLAIM).toMessage(ExaltationClaim);
       map.map(FORGE_REQUEST).toMessage(ForgeRequest);
       map.map(FORGE_RESPONSE).toMessage(ForgeResponse);
-      map.map(BLUEPRINT_UPDATE).toMessage(BlueprintUpdate);
+      map.map(TEST113).toMessage(Test113);
+      map.map(EXALTATION_UPDATE).toMessage(ExaltationUpdate).toMethod(this.onExaltationUpdate);
+      map.map(BLUEPRINT_UPDATE).toMessage(BlueprintUpdate).toMethod(this.onBlueprintUpdate);
       map.map(VAULT_UPDATE).toMessage(VaultUpdate).toMethod(this.onVaultUpdate);
       map.map(0).toMessage(Failure).toMethod(this.onFailure);
       map.map(101).toMessage(CreateSuccess).toMethod(this.onCreateSuccess);
@@ -1214,6 +1217,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.unmap(FORGE_REQUEST);
       map.unmap(FORGE_RESPONSE);
       map.unmap(BLUEPRINT_UPDATE);
+      map.unmap(TEST113);
    }
 
    private function encryptConnection() : void {
@@ -1302,9 +1306,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       this.encryptConnection();
       var _loc1_:Account = StaticInjectorContext.getInjector().getInstance(Account);
       this.addTextLine.dispatch(ChatMessage.make("*Client*","chat.connected"));
-      var _loc2_:Hello = this.messages.require(1) as Hello;
+      var _loc2_:Hello = this.messages.require(HELLO) as Hello;
       _loc2_.buildVersion_ = Parameters.CLIENT_VERSION;
-      _loc2_.gameId_ = gameId_;
+      _loc2_.gameId_ = gameId_ == Parameters.NEXUS_GAMEID &&
+              Parameters.data.tutorialMode && !Parameters.isGoto ?
+                      Parameters.TUTORIAL_GAMEID : gameId_;
+      Parameters.isGoto = false;
       _loc2_.guid_ = this.rsaEncrypt(_loc1_.getUserId());
       _loc2_.password_ = this.rsaEncrypt(_loc1_.getPassword());
       _loc2_.secret_ = this.rsaEncrypt(_loc1_.getSecret());
@@ -1686,13 +1693,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       }
       this.lastTickId_ = param1.tickId_;
       this.gs_.map.calcVulnerables();
-      if(Parameters.usingPortal) {
-         _loc2_ = 0;
-         while(_loc2_ < Parameters.portalSpamRate) {
-            usePortal(Parameters.portalID);
-            _loc2_++;
-         }
-      }
       if(Parameters.watchInv) {
          _loc2_ = 4;
          while(_loc2_ < 12) {
@@ -2520,12 +2520,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
    }
 
    private function onReconnect(param1:Reconnect) : void {
-      if(Parameters.ignoreRecon) {
-         if(!Parameters.usingPortal) {
-            this.addTextLine.dispatch(ChatMessage.make(param1.key_.length.toString(),param1.toString()));
-         }
-         return;
-      }
       var _loc3_:Server = new Server().setName(param1.name_).setAddress(param1.host_ != ""?param1.host_:server_.address).setPort(param1.host_ != ""?param1.port_:int(server_.port));
       var _loc2_:int = param1.gameId_;
       var _loc4_:Boolean = createCharacter_;
@@ -2737,11 +2731,9 @@ public class GameServerConnectionConcrete extends GameServerConnection {
    private function onClientStat(param1:ClientStat) : void {
       var _loc2_:* = null;
       if(Parameters.data.showClientStat) {
-         if(!Parameters.usingPortal) {
-            this.addTextLine.dispatch(ChatMessage.make("#" + param1.name_,param1.value_.toString()));
-            _loc2_ = StaticInjectorContext.getInjector().getInstance(Account);
-            _loc2_.reportIntStat(param1.name_,param1.value_);
-         }
+         this.addTextLine.dispatch(ChatMessage.make("#" + param1.name_,param1.value_.toString()));
+         _loc2_ = StaticInjectorContext.getInjector().getInstance(Account);
+         _loc2_.reportIntStat(param1.name_,param1.value_);
       }
    }
 
@@ -2919,9 +2911,15 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       this.addTextLine.dispatch(ChatMessage.make("*Error*",param1));
    }
 
-   private function onVaultUpdate(param1:VaultUpdate) : void {
-      var _loc2_:VaultUpdateSignal = this.injector.getInstance(VaultUpdateSignal);
-      _loc2_.dispatch(param1.vaultContents,param1.giftContents,param1.potionContents);
+   private function onVaultUpdate(pkt:VaultUpdate) : void {
+      var vaultUpdate:VaultUpdateSignal = this.injector.getInstance(VaultUpdateSignal);
+      vaultUpdate.dispatch(pkt.vaultContents, pkt.giftContents, pkt.potionContents);
+   }
+
+   private function onExaltationUpdate(pkt:ExaltationUpdate) : void {
+   }
+
+   private function onBlueprintUpdate(pkt:BlueprintUpdate) : void {
    }
 
    private function onFailure(param1:Failure) : void {

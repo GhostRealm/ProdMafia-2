@@ -95,6 +95,8 @@ public class Parameters {
 
     public static const raPotions:Vector.<int> = new <int>[2591,5465,9064,9729,2592,5466,9065,9727,2593,5467,9066,9726,2612,5468,9067,9724,2613,5469,9068,9725,2636,5470,9069,9728];
 
+    public static var isGoto:Boolean = false;
+
     public static var lastRecon:ReconnectEvent;
 
     public static var root:DisplayObject;
@@ -108,8 +110,6 @@ public class Parameters {
     public static var player:Player = null;
 
     public static var reconNexus:ReconnectEvent = null;
-
-    public static var ignoreRecon:Boolean;
 
     public static var followName:String = "";
 
@@ -146,14 +146,6 @@ public class Parameters {
     public static var phaseChangeAt:int;
 
     public static var phaseName:String;
-
-    public static var usingPortal:Boolean;
-
-    public static var portalID:int;
-
-    public static var portalSpamRate:int = 55;
-
-    public static var realmJoining:Boolean;
 
     public static var realmName:String;
 
@@ -902,6 +894,8 @@ public class Parameters {
         setDefault("depositKey",101);
         setDefault("customName","");
         setDefault("logErrors", false);
+        setDefault("test113Count", 0);
+        setDefault("tutorialMode", false);
         Options.calculateIgnoreBitmask();
     }
 

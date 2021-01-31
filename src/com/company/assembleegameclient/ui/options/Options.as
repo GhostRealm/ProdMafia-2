@@ -475,6 +475,7 @@ package com.company.assembleegameclient.ui.options {
          this.addOptionAndPosition(new KeyMapper("depositKey","Deposit Key","The key which deposits all your items into the Vault, if possible"));
          this.addOptionAndPosition(new KeyMapper("TogglePlayerFollow","Toggle Player Follow","Set with /follow <name>, press this hotkey to toggle on and off"));
          this.addOptionAndPosition(new ChoiceOption("logErrors",makeOnOffLabels(),[true,false],"Log Errors","This toggles whether to log errors, for debugging purposes",null));
+         this.addOptionAndPosition(new ChoiceOption("tutorialMode",makeOnOffLabels(),[true,false],"Tutorial Mode","This toggles whether to log errors, for debugging purposes",null));
       }
       
       public function addOptionsChoiceOption() : void {

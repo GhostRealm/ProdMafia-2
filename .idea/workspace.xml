@@ -30,7 +30,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/forge" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -46,11 +46,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\fltr\Documents\GitHub\ProdMafia\src\kabam\rotmg\messaging\impl\outgoing" />
       <recent name="C:\Users\fltr\Downloads\ProdMafia\src\com\company\assembleegameclient\ui\forge" />
       <recent name="C:\Users\fltr\Downloads\ProdMafia\src" />
       <recent name="C:\Users\fltr\Downloads\ProdMafia\src\kabam\rotmg\ui\view" />
       <recent name="C:\Users\fltr\Downloads\ProdMafia\src\kabam\rotmg\messaging\impl\incoming" />
-      <recent name="C:\Users\fltr\Downloads\ProdMafia\src\kabam\rotmg\messaging\impl\outgoing" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\fltr\Downloads\ProdMafia\src" />
@@ -168,6 +168,7 @@
       <workItem from="1611902232388" duration="4714000" />
       <workItem from="1612003994891" duration="3494000" />
       <workItem from="1612097171715" duration="1507000" />
+      <workItem from="1612103440538" duration="4328000" />
     </task>
     <servers />
   </component>

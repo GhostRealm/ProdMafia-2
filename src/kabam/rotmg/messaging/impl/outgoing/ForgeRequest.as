@@ -4,7 +4,7 @@ import flash.utils.IDataOutput;
 import kabam.rotmg.messaging.impl.data.SlotObjectData;
 
 public class ForgeRequest extends OutgoingMessage {
-   public var selection:int;
+   public var itemId:int;
    public var offers:Vector.<SlotObjectData>;
 
    public function ForgeRequest(id:uint, callback:Function) {
@@ -13,7 +13,7 @@ public class ForgeRequest extends OutgoingMessage {
    }
 
    override public function writeToOutput(data:IDataOutput) : void {
-      data.writeInt(this.selection);
+      data.writeInt(this.itemId);
       var offersLen:int = this.offers.length;
       data.writeInt(offersLen);
       for (var i:int = 0; i < offersLen; i++)

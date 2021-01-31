@@ -435,13 +435,6 @@ public class ParseChatMessageCommand {
                   break;
             }
             return;
-         case "/tsadd":
-         case "/tsa":
-            return;
-         case "/irecon":
-            Parameters.ignoreRecon = !Parameters.ignoreRecon;
-            this.addTextLine.dispatch(ChatMessage.make("*Help*",Parameters.data.ignoreRecon?"Now ignoring reconnects":"No longer ignoring reconnects"));
-            return;
          case "/name":
             var n:String = this.data.substring("/name".length + 1);
             Parameters.data.customName = n;
@@ -458,19 +451,21 @@ public class ParseChatMessageCommand {
                     date.minutes + " minutes and " +
                     date.seconds + " seconds."));
             return;
-         case "/test1":
-            var gs:GameSprite = this.hudModel.gameSprite;
-            player = gs.map.player_;
-            gs.gsc_.invSwapRaw(player.x_, player.y_,
-                    player.objectId_, 13, -1,
-                    player.objectId_, 4, 0xa4b);
+         case "/an":
+            var val:int = parseInt(split[1]);
+            Parameters.data.AutoNexus = val;
+            Parameters.save();
+            this.addTextLine.dispatch(Parameters.HELP_CHAT_NAME,
+                    "Your Auto Nexus percentage has been set to: " + val);
             return;
-         case "/test2":
-            var gs:GameSprite = this.hudModel.gameSprite;
-            player = gs.map.player_;
-            gs.gsc_.invSwapRaw(player.x_, player.y_,
-                    player.objectId_, 13, 0xa4b,
-                    player.objectId_, 4, -1);
+         case "/grank":
+            var rank:int = parseInt(split[1]);
+            this.hudModel.gameSprite.gsc_.changeGuildRank(this.hudModel.gameSprite.map.player_.name_, rank);
+            this.addTextLine.dispatch(Parameters.HELP_CHAT_NAME,
+                    "Your guild rank has been set to: " + rank);
+            return;
+         case "/t113":
+            this.hudModel.gameSprite.gsc_.test113();
             return;
          default:
             this.hudModel.gameSprite.gsc_.playerText(this.data);
@@ -587,6 +582,8 @@ public class ParseChatMessageCommand {
    }
 
    public function jumpToIP(param1:String) : void {
+      Parameters.isGoto = true;
+
       this.enterGame.dispatch();
       var _loc2_:GameInitData = new GameInitData();
       _loc2_.server = new Server();

@@ -281,13 +281,6 @@ import kabam.rotmg.messaging.impl.incoming.MapInfo;
          } else {
             this.questModel.previousRealm = "";
          }
-         var _loc1_:AppEngineClient = StaticInjectorContext.getInjector().getInstance(AppEngineClient);
-         var _loc3_:Object = {
-            "game_net_user_id":_loc2_.gameNetworkUserId(),
-            "game_net":_loc2_.gameNetwork(),
-            "play_platform":_loc2_.playPlatform()
-         };
-         MoreObjectUtil.addToObject(_loc3_,_loc2_.getCredentials());
          if(_loc4_ == "Daily Quest Room") {
             this.gsc_.questFetch();
          } else if(_loc4_ == "Cloth Bazaar") {
