@@ -72,6 +72,8 @@ public class Projectile extends BasicObject {
 
    public var angle:Number = 0;
 
+   public var prevDirAngle:Number = 0;
+
    public var lifetime:Number = 1.0;
 
    public var sinAngle:Number;
@@ -175,10 +177,7 @@ public class Projectile extends BasicObject {
          return false;
 
       var gsc:GameServerConnection = this.map_.gs_.gsc_;
-      if (this.projProps.acceleration != 0)
-         this.updatePosition(elapsed);
-      else
-         this.curPos = this.positionAt(elapsed);
+      this.curPos = this.positionAt(elapsed);
       if (!moveTo(this.curPos.x + this.sinePos.x,this.curPos.y + this.sinePos.y) || this.square.tileType == 65535) {
          if(this.damagesPlayers_) {
             gsc.squareHit(param1,this.bulletId_,this.ownerId_);
@@ -427,176 +426,80 @@ public class Projectile extends BasicObject {
       return _loc8_;
    }
 
-   private function peekPosition(elapsed:int, ahead:int) : Point {
-      var sineFake:Point = new Point();
-      var curFake:Point = new Point(this.curPos.x, this.curPos.y);
-
-      if (this.projProps.parametric) {
-         var t:Number = (elapsed + ahead) / this.lifetime * 2 * Math.PI;
-         var x:Number = Math.sin(t) * this.bIdMod2Flip;
-         var y:Number = Math.sin(2 * t) * this.bIdMod4Flip;
-         sineFake.x = (x * this.cosAngle - y * this.sinAngle) *
-                 this.projProps.magnitude;
-         sineFake.y = (x * this.sinAngle + y * this.cosAngle) *
-                 this.projProps.magnitude;
-         return new Point(curFake.x + sineFake.x, curFake.y + sineFake.y);
-      }
-
-      var dt:int = (elapsed + ahead) - this.lastUpdateElapsed;
-      var speed:Number = this.projProps.speed * this.speedMul;
-
-      if (this.projProps.acceleration != 0 &&
-              (this.projProps.accelerationDelay <= 0 ||
-                      (elapsed + ahead) >= this.projProps.accelerationDelay))
-         speed += this.speedMod +
-                 (this.projProps.acceleration / 10000.0) *
-                 (Math.min((elapsed + ahead) - this.projProps.accelerationDelay, dt) / 1000.0);
-
-      if (this.projProps.speedClamp != -1) {
-         var scaledClamp:Number = this.projProps.speedClamp / 10000.0;
-         if (this.projProps.speed > scaledClamp
-                 && speed < scaledClamp
-                 || this.projProps.speed < scaledClamp
-                 && speed > scaledClamp)
-            speed = scaledClamp;
-      }
-
-      var dist:Number = speed * dt;
-      if (this.projProps.boomerang_ && (elapsed + ahead) > this.lifetime / 2)
-         dist = -dist;
-
-      curFake.x += dist * this.cosAngle;
-      curFake.y += dist * this.sinAngle;
-
-      var amplitude:Number = this.projProps.amplitude;
-      var frequency:Number = this.projProps.frequency;
-      if (this.projProps.wavy_) {
-         amplitude = ((elapsed / this.lifetime) * 0.4) * (this.projProps.amplitude || 1);
-         frequency = (this.projProps.frequency || 1);
-      }
-
-      if (amplitude != 0) {
-         var deflection:Number = amplitude
-                 * Math.sin(this.phase + elapsed / this.lifetime
-                         * frequency * 2 * Math.PI);
-         sineFake.x = deflection * Math.cos(this.angle + Math.PI / 2);
-         sineFake.y = deflection * Math.sin(this.angle + Math.PI / 2);
-      }
-
-      return new Point(curFake.x + sineFake.x, curFake.y + sineFake.y);
-   }
-
-   private function positionAt(elapsed:int):Point {
+   private function positionAt(elapsed:int) : Point {
       var periodFactor:Number = NaN;
       var amplitudeFactor:Number = NaN;
       var theta:Number = NaN;
       var t:Number = NaN;
       var x:Number = NaN;
       var y:Number = NaN;
-      var sin:Number = NaN;
-      var cos:Number = NaN;
       var halfway:Number = NaN;
       var deflection:Number = NaN;
       var p:Point = new Point();
       p.x = this.startX;
       p.y = this.startY;
-      var dist:Number = elapsed * this.projProps.speed * this.speedMul;
-      var phase:Number = this.bulletId_ % 2 == 0 ? Number(0) : Number(Math.PI);
+      var dist:Number, baseSpeed:Number = this.projProps.speed * this.speedMul;
+      if (this.projProps.acceleration == 0 || elapsed < this.projProps.accelerationDelay)
+         dist = elapsed * baseSpeed;
+      else {
+         var timeTillMaxSpeed:int;
+         var timeClamped:int, clampedSpeed:Number;
+         if (this.projProps.speedClamp != -1) {
+            clampedSpeed = this.projProps.speedClamp / 10000.0;
+            var speedNeeded:Number = Math.abs(this.projProps.speedClamp - this.projProps.realSpeed);
+            timeTillMaxSpeed = speedNeeded / Math.abs(this.projProps.acceleration) * 1000.0;
+            timeTillMaxSpeed = Math.min(elapsed - this.projProps.accelerationDelay, timeTillMaxSpeed);
+            if (elapsed - this.projProps.accelerationDelay - timeTillMaxSpeed > 0)
+               timeClamped = elapsed - this.projProps.accelerationDelay - timeTillMaxSpeed;
+         } else
+            timeTillMaxSpeed = this.lifetime - this.projProps.accelerationDelay;
+         dist = this.projProps.accelerationDelay * baseSpeed +
+                 timeTillMaxSpeed * baseSpeed + (timeTillMaxSpeed * timeTillMaxSpeed / 1000.0) * (1/2) * (this.projProps.acceleration / 10000.0) +
+                 timeClamped * clampedSpeed;
+      }
+
       if (this.projProps.wavy_) {
          periodFactor = 6 * Math.PI;
          amplitudeFactor = Math.PI / 64;
-         theta = this.angle + amplitudeFactor * Math.sin(phase + periodFactor * elapsed / 1000);
-         p.x = p.x + dist * Math.cos(theta);
-         p.y = p.y + dist * Math.sin(theta);
+         theta = this.angle + amplitudeFactor * Math.sin(this.phase + periodFactor * elapsed / 1000);
+         p.x += dist * Math.cos(theta);
+         p.y += dist * Math.sin(theta);
       } else if (this.projProps.parametric) {
          t = elapsed / this.projProps.lifetime * 2 * Math.PI;
-         x = Math.sin(t) * (Boolean(this.bulletId_ % 2) ? 1 : -1);
-         y = Math.sin(2 * t) * (this.bulletId_ % 4 < 2 ? 1 : -1);
-         sin = Math.sin(this.angle);
-         cos = Math.cos(this.angle);
-         p.x = p.x + (x * cos - y * sin) * this.projProps.magnitude;
-         p.y = p.y + (x * sin + y * cos) * this.projProps.magnitude;
+         x = Math.sin(t) * this.bIdMod2Flip;
+         y = Math.sin(2 * t) * this.bIdMod4Flip;
+         p.x += (x * this.cosAngle - y * this.sinAngle) * this.projProps.magnitude;
+         p.y += (x * this.sinAngle + y * this.cosAngle) * this.projProps.magnitude;
       } else {
          if (this.projProps.boomerang_) {
             halfway = this.projProps.lifetime * (this.projProps.speed * this.speedMul) / 2;
-            if (dist > halfway) {
+            if (dist > halfway)
                dist = halfway - (dist - halfway);
-            }
          }
-         p.x = p.x + dist * Math.cos(this.angle);
-         p.y = p.y + dist * Math.sin(this.angle);
+         p.x += dist * this.cosAngle;
+         p.y += dist * this.sinAngle;
          if (this.projProps.amplitude != 0) {
-            deflection = this.projProps.amplitude * Math.sin(phase + elapsed / this.projProps.lifetime * this.projProps.frequency * 2 * Math.PI);
-            p.x = p.x + deflection * Math.cos(this.angle + Math.PI / 2);
-            p.y = p.y + deflection * Math.sin(this.angle + Math.PI / 2);
+            deflection = this.projProps.amplitude * Math.sin(this.phase + elapsed / this.projProps.lifetime * this.projProps.frequency * 2 * Math.PI);
+            p.x += deflection * Math.cos(this.angle + Math.PI / 2);
+            p.y += deflection * Math.sin(this.angle + Math.PI / 2);
          }
       }
+
       return p;
-   }
-
-   private function updatePosition(elapsed:int) : void {
-      if (this.projProps.parametric) {
-         var t:Number = elapsed / this.lifetime * 2 * Math.PI;
-         var x:Number = Math.sin(t) * this.bIdMod2Flip;
-         var y:Number = Math.sin(2 * t) * this.bIdMod4Flip;
-         this.sinePos.x = (x * this.cosAngle - y * this.sinAngle) *
-                 this.projProps.magnitude;
-         this.sinePos.y = (x * this.sinAngle + y * this.cosAngle) *
-                 this.projProps.magnitude;
-         return;
-      }
-
-      var dt:int = elapsed - this.lastUpdateElapsed;
-      this.lastUpdateElapsed = elapsed;
-      var speed:Number = this.projProps.speed * this.speedMul;
-
-      if (this.projProps.acceleration != 0 &&
-              (this.projProps.accelerationDelay <= 0 ||
-                      elapsed >= this.projProps.accelerationDelay))
-         this.speedMod += this.projProps.acceleration *
-                 Math.min(elapsed - this.projProps.accelerationDelay, dt) / (10000 * 1000);
-
-      speed += this.speedMod;
-      if (this.projProps.speedClamp != -1) {
-         var scaledClamp:Number = this.projProps.speedClamp / 10000.0;
-         if (this.projProps.speed > scaledClamp
-                    && speed < scaledClamp
-                 || this.projProps.speed < scaledClamp
-                    && speed > scaledClamp)
-            speed = scaledClamp;
-      }
-
-      var dist:Number = speed * dt;
-      if (this.projProps.boomerang_ && elapsed > this.lifetime / 2)
-         dist = -dist;
-
-      this.curPos.x += dist * this.cosAngle;
-      this.curPos.y += dist * this.sinAngle;
-
-      var amplitude:Number = this.projProps.amplitude;
-      var frequency:Number = this.projProps.frequency;
-      if (this.projProps.wavy_) {
-         amplitude = (elapsed / this.lifetime) * 0.4 * (this.projProps.amplitude || 1);
-         frequency = this.projProps.frequency || 1;
-      }
-
-      if (amplitude != 0) {
-         var deflection:Number = amplitude
-                 * Math.sin(this.phase + elapsed / this.lifetime
-                         * frequency * 2 * Math.PI);
-         this.sinePos.x = deflection * Math.cos(this.angle + Math.PI / 2);
-         this.sinePos.y = deflection * Math.sin(this.angle + Math.PI / 2);
-      }
    }
 
    private function getDirectionAngle(time:int) : Number {
       var elapsed:int = time - this.startTime_;
-      var futurePos:Point = this.projProps.acceleration != 0 ?
-              this.peekPosition(elapsed, 16) : this.positionAt(elapsed);
+      var futurePos:Point = this.positionAt(elapsed + 16);
 
       var xDelta:Number = futurePos.x - x_;
       var yDelta:Number = futurePos.y - y_;
-      return Math.atan2(yDelta, xDelta);
+      if (xDelta == 0 && yDelta == 0)
+         return this.prevDirAngle;
+
+      var angle:Number = Math.atan2(yDelta, xDelta);
+      this.prevDirAngle = angle;
+      return angle;
    }
 }
 }

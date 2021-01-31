@@ -1,6 +1,9 @@
 package com.company.assembleegameclient.ui.tooltip.slotcomparisons {
-   import com.company.assembleegameclient.ui.tooltip.TooltipHelper;
-   import kabam.rotmg.text.view.stringBuilder.AppendingLineBuilder;
+import com.company.assembleegameclient.objects.ObjectLibrary;
+import com.company.assembleegameclient.ui.tooltip.TooltipHelper;
+import com.company.assembleegameclient.util.MathUtil;
+
+import kabam.rotmg.text.view.stringBuilder.AppendingLineBuilder;
    
    public class GeneralProjectileComparison extends SlotComparison {
        
@@ -31,11 +34,13 @@ package com.company.assembleegameclient.ui.tooltip.slotcomparisons {
          }
          this.buildRateOfFireText();
       }
-      
+
       private function addProjectileText() : void {
          this.addDamageText();
-         var _loc2_:Number = this.projXML.Speed * this.projXML.LifetimeMS / 10000;
-         var _loc1_:Number = this.otherProjXML.Speed * this.otherProjXML.LifetimeMS / 10000;
+         var range:Number = ObjectLibrary.propsLibrary_[this.projXML.@type].projectiles[0].calcMaxRange();
+         var _loc2_:Number = MathUtil.round(range,2);
+         var _loc1_:Number = MathUtil.round(this.otherProjXML ?
+                 ObjectLibrary.propsLibrary_[this.otherProjXML.@type].projectiles[0].calcMaxRange() : range,2);
          var _loc3_:String = _loc2_.toFixed(2);
          comparisonStringBuilder.pushParams("EquipmentToolTip.range",{"range":wrapInColoredFont(_loc3_,getTextColor(_loc2_ - _loc1_))});
          if("MultiHit" in this.projXML) {

@@ -2021,9 +2021,8 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       var _loc13_:Pet = go as Pet;
       if(_loc13_) {
          this.petUpdater.updatePet(_loc13_,param2);
-         if(this.gs_.map.isPetYard) {
-            this.petUpdater.updatePetVOs(_loc13_,param2);
-         }
+         this.petUpdater.updatePetVOs(_loc13_,param2);
+
          go.updateStatuses();
          return;
       }

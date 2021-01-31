@@ -500,7 +500,7 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
          var _loc23_:* = false;
          var _loc15_:* = false;
          var _loc19_:* = false;
-         var _loc7_:* = null;
+         var _loc7_:ProjectileProperties = null;
          var _loc4_:Number = NaN;
          var _loc11_:Number = NaN;
          var _loc9_:Boolean = false;
@@ -524,8 +524,9 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
             _loc19_ = this.prevSpeedMult != this.projectileSpeedMult;
             if(_loc17_ != -1) {
                if(this.range == -1 || _loc23_ || _loc15_ || _loc19_) {
-                  _loc7_ = ObjectLibrary.xmlLibrary_[_loc17_];
-                  this.range = _loc7_.Projectile.LifetimeMS * this.projectileLifeMult * _loc7_.Projectile.Speed * this.projectileSpeedMult / 10000;
+                  _loc7_ = ObjectLibrary.propsLibrary_[_loc17_].projectiles_[0];
+                  this.range = _loc7_.calcMaxRange(this.projectileSpeedMult, this.projectileLifeMult);
+                  this.range = Math.min(this.range, 16);
                   if(_loc23_) {
                      this.prevWeaponId = _loc17_;
                   }
@@ -1559,8 +1560,9 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
             this.doShoot(this.attackStart_,param1,ObjectLibrary.xmlLibrary_[param1],this.attackAngle_,true,true,true);
             return true;
          }
-         _loc5_ = _loc8_.speed * this.projectileSpeedMult * (_loc8_.lifetime * this.projectileLifeMult);
-         _loc6_ = this.calcAimAngle(_loc8_.speed * this.projectileSpeedMult,_loc5_ + Parameters.data.aaDistance,_loc10_,_loc4_);
+         _loc6_ = this.calcAimAngle(_loc8_.calcAvgSpeed(this.projectileSpeedMult, this.projectileLifeMult),
+                 _loc8_.calcMaxRange(this.projectileSpeedMult, this.projectileLifeMult) +
+                 Parameters.data.aaDistance, _loc10_, _loc4_);
          if(_loc6_) {
             _loc7_ = Math.atan2(_loc6_.y - this.y_,_loc6_.x - this.x_);
             this.attackStart_ = param2;
@@ -1581,7 +1583,7 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
          var _loc8_:int = 0;
          var _loc9_:int = 0;
          var _loc4_:* = null;
-         var _loc5_:* = null;
+         var _loc5_:ProjectileProperties = null;
          var _loc7_:XML = ObjectLibrary.xmlLibrary_[param1];
          if(!this.canUseAltWeapon(param2,_loc7_)) {
             return;
@@ -1661,7 +1663,7 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
                   if(this.isUnstable) {
                      _loc4_ = new Vector3D(Math.random() - 0.5,Math.random() - 0.5);
                   } else {
-                     _loc4_ = this.calcAimAngle(_loc5_.speed_,_loc5_.maxProjTravel_,new Vector3D(this.x_,this.y_),new Vector3D(_loc10_.x,_loc10_.y),true);
+                     _loc4_ = this.calcAimAngle(_loc5_.speed,_loc5_.maxProjTravel_,new Vector3D(this.x_,this.y_),new Vector3D(_loc10_.x,_loc10_.y),true);
                   }
                   if(_loc4_) {
                      this.useAltWeapon(_loc4_.x,_loc4_.y,1,param2,true,_loc7_);
@@ -2450,7 +2452,7 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
          var _loc12_:Number = NaN;
          var _loc13_:Number = NaN;
          var _loc28_:* = null;
-         var _loc15_:* = null;
+         var _loc15_:ProjectileProperties = null;
          var _loc24_:Number = NaN;
          var _loc18_:Number = NaN;
          var _loc19_:* = null;
@@ -2514,7 +2516,7 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
                   _loc13_ = Math.max(this.getAttribute(_loc29_,"minDistance",0),Math.min(this.getAttribute(_loc29_,"maxDistance",4.4),_loc12_));
                   _loc28_ = new Point(x_ + _loc13_ * Math.cos(_loc21_),y_ + _loc13_ * Math.sin(_loc21_));
                   _loc15_ = ObjectLibrary.propsLibrary_[_loc10_].projectiles_[0];
-                  _loc24_ = _loc15_.speed_ * _loc15_.lifetime_ / 20000;
+                  _loc24_ = _loc15_.speed * _loc15_.lifetime / 20000;
                   _loc18_ = _loc21_ + this.getAttribute(_loc29_,"offsetAngle",90) * 0.0174532925199433;
                   _loc19_ = new Point(_loc28_.x + _loc24_ * Math.cos(_loc18_ + 3.14159265358979),_loc28_.y + _loc24_ * Math.sin(_loc18_ + 3.14159265358979));
                   if(this.isFullOccupy(_loc19_.x + 0.5,_loc19_.y + 0.5)) {

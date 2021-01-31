@@ -1074,22 +1074,24 @@ package com.company.assembleegameclient.objects {
                   _loc7_ = _loc17_;
                   var _loc21_:* = _loc7_;
                   switch(_loc21_) {
-                     case 0:
+                     case ConditionEffect.DEAD:
                         break;
-                     case 3:
-                     case 5:
-                     case 8:
-                     case 9:
-                     case 10:
-                     case 11:
-                     case 12:
-                     case 13:
-                     case 15:
-                     case 16:
-                     case 23:
-                     case 29:
-                     case 30:
-                     case 31:
+                     case ConditionEffect.WEAK:
+                     case ConditionEffect.SICK:
+                     case ConditionEffect.BLIND:
+                     case ConditionEffect.HALLUCINATING:
+                     case ConditionEffect.DRUNK:
+                     case ConditionEffect.CONFUSED:
+                     case ConditionEffect.STUN_IMMUNE:
+                     case ConditionEffect.INVISIBLE:
+                     case ConditionEffect.SPEEDY:
+                     case ConditionEffect.BLEEDING:
+                     case ConditionEffect.HEXED:
+                     case ConditionEffect.STASIS_IMMUNE:
+                     case ConditionEffect.NINJA_SPEEDY:
+                     case ConditionEffect.DARKNESS:
+                     case ConditionEffect.UNSTABLE:
+                     case ConditionEffect.PETRIFIED_IMMUNE:
                      case ConditionEffect.SILENCED:
                         _loc10_ = ConditionEffect.effects_[_loc17_];
                         break;
@@ -1196,10 +1198,9 @@ package com.company.assembleegameclient.objects {
                         }
                         _loc10_ = ConditionEffect.effects_[_loc17_];
                         break;
-                     case 38:
+                     case ConditionEffect.GROUND_DAMAGE:
                         _loc13_ = true;
                         break;
-                     case 99:
                   }
                   if(_loc10_) {
                      if(_loc17_ < 32) {

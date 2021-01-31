@@ -90,20 +90,25 @@ import flash.events.Event;
          }
          var _loc1_:URLRequest = new URLRequest(this.url);
          _loc1_.method = "POST";
-         _loc1_.data = this.makeUrlVariables();
+         _loc1_.data = this.makeUrlVariables(this.url);
          _loc1_.requestHeaders = _loc2_;
          return _loc1_;
       }
-      
-      private function makeUrlVariables() : URLVariables {
-         var _loc1_:* = null;
+
+      private function makeUrlVariables(url:String) : URLVariables {
+         var objName:* = null;
          var _loc3_:URLVariables = new URLVariables();
          var _loc2_:String = "";
-         for(_loc1_ in this.params) {
-            if(!this.fromLauncher && (_loc1_ == "guid" || _loc1_ == "password")) {
-               _loc2_ = _loc2_ + ((_loc2_.length > 0?"&":"") + _loc1_ + "=" + this.params[_loc1_]);
+         for (objName in this.params) {
+            if(!this.fromLauncher &&
+                    url.indexOf("app/init") == -1 &&
+                    url.indexOf("account/verify") == -1 &&
+                    url.indexOf("char/list") == -1 &&
+                    url.indexOf("account/getOwnedPetSkins") == -1 &&
+                    (objName == "guid" || objName == "password")) {
+               _loc2_ = _loc2_ + ((_loc2_.length > 0?"&":"") + objName + "=" + this.params[objName]);
             }
-            _loc3_[_loc1_] = this.params[_loc1_];
+            _loc3_[objName] = this.params[objName];
          }
          if(_loc2_.length > 0) {
             _loc3_[""] = _loc2_;

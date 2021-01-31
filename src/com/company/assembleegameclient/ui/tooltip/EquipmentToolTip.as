@@ -591,26 +591,25 @@ package com.company.assembleegameclient.ui.tooltip {
             this.effects.push(new Effect("EquipmentToolTip.shots",{"numShots":TooltipHelper.compare(_loc1_.a,_loc1_.b)}));
          }
       }
-      
+
       private function addProjectileTagsToEffectsList() : void {
          var _loc1_:* = null;
          if(this.objectXML.hasOwnProperty("Projectile")) {
             _loc1_ = this.curItemXML == null?null:this.curItemXML.Projectile[0];
-            this.addProjectile(this.objectXML.Projectile[0],_loc1_);
+            this.addProjectile(this.objectXML.Projectile[0],this.objectXML.@type,_loc1_, _loc1_ ? _loc1_.@type : -1);
          }
       }
-      
-      private function addProjectile(param1:XML, param2:XML = null) : void {
+
+      private function addProjectile(param1:XML, parentType1:int, param2:XML = null, parentType2:int = -1) : void {
          var _loc7_:* = null;
          var _loc9_:ComPairTag = new ComPairTag(param1,param2,"MinDamage");
          var _loc3_:ComPairTag = new ComPairTag(param1,param2,"MaxDamage");
-         var _loc11_:ComPairTag = new ComPairTag(param1,param2,"Speed");
-         var _loc15_:ComPairTag = new ComPairTag(param1,param2,"LifetimeMS");
          var _loc10_:ComPairTagBool = new ComPairTagBool(param1,param2,"Boomerang");
          var _loc5_:ComPairTagBool = new ComPairTagBool(param1,param2,"Parametric");
-         var _loc12_:ComPairTag = new ComPairTag(param1,param2,"Magnitude",3);
-         var _loc17_:Number = !!_loc5_.a?_loc12_.a:Number(MathUtil.round(_loc11_.a * _loc15_.a / (_loc10_.a + 1) / 10000,2));
-         var _loc16_:Number = !!_loc5_.b?_loc12_.b:Number(MathUtil.round(_loc11_.b * _loc15_.b / (_loc10_.b + 1) / 10000,2));
+         var range:Number = ObjectLibrary.propsLibrary_[parentType1].projectiles_[0].calcMaxRange();
+         var _loc17_:Number = MathUtil.round(range,2);
+         var _loc16_:Number = MathUtil.round(parentType2 > 0 ?
+                 ObjectLibrary.propsLibrary_[parentType2].projectiles_[0].calcMaxRange() : range,2);
          var _loc8_:Number = (_loc3_.a + _loc9_.a) / 2;
          var _loc13_:Number = (_loc3_.b + _loc9_.b) / 2;
          var _loc14_:String = (_loc9_.a == _loc3_.a?_loc9_.a:_loc9_.a + " - " + _loc3_.a).toString();

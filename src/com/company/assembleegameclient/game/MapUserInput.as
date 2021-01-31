@@ -753,7 +753,7 @@ public class MapUserInput {
             } else if(_loc16_ != Parameters.data.ignoreSpeedyKey) {
                if(_loc16_ == Parameters.data.AAHotkey) {
                   Parameters.data.AAOn = !Parameters.data.AAOn;
-                  if(!mouseDown_ && !Parameters.data.AAOn) {
+                  if(player && !mouseDown_ && !Parameters.data.AAOn) {
                      player.isShooting = false;
                   }
                   player.textNotification(!!Parameters.data.AAOn?"AutoAim enabled":"AutoAim disabled",16777215,2000,false);
