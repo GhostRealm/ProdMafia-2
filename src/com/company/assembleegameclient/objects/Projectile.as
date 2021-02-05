@@ -446,7 +446,7 @@ public class Projectile extends BasicObject {
          var timeClamped:int, clampedSpeed:Number;
          if (this.projProps.speedClamp != -1) {
             clampedSpeed = this.projProps.speedClamp / 10000.0;
-            var speedNeeded:Number = Math.abs(this.projProps.speedClamp - this.projProps.realSpeed);
+            var speedNeeded:Number = Math.abs(this.projProps.speedClamp - (this.projProps.realSpeed * this.speedMul));
             timeTillMaxSpeed = speedNeeded / Math.abs(this.projProps.acceleration) * 1000.0;
             timeTillMaxSpeed = Math.min(elapsed - this.projProps.accelerationDelay, timeTillMaxSpeed);
             if (elapsed - this.projProps.accelerationDelay - timeTillMaxSpeed > 0)
@@ -472,6 +472,7 @@ public class Projectile extends BasicObject {
          p.y += (x * this.sinAngle + y * this.cosAngle) * this.projProps.magnitude;
       } else {
          if (this.projProps.boomerang_) {
+            // todo: make the halfway actually halfway for accel projs
             halfway = this.projProps.lifetime * (this.projProps.speed * this.speedMul) / 2;
             if (dist > halfway)
                dist = halfway - (dist - halfway);

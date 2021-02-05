@@ -239,7 +239,7 @@ package com.company.assembleegameclient.screens {
       
       private function createCreditDisplay() : void {
          this.creditDisplay = new CreditDisplay();
-         this.creditDisplay.draw(this.model.getCredits(),this.model.getFame());
+         this.creditDisplay.draw(this.model.getCredits(),this.model.getFame(), this.model.getForgefire());
          this.creditDisplay.x = this.getReferenceRectangle().width;
          this.creditDisplay.y = 20;
          addChild(this.creditDisplay);

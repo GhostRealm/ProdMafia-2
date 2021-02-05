@@ -69,7 +69,7 @@ package kabam.rotmg.classes.view {
          var _loc2_:CreditDisplay = new CreditDisplay(null,true);
          var _loc1_:PlayerModel = StaticInjectorContext.getInjector().getInstance(PlayerModel);
          if(_loc1_ != null) {
-            _loc2_.draw(_loc1_.getCredits(),_loc1_.getFame(),_loc1_.getTokens());
+            _loc2_.draw(_loc1_.getCredits(),_loc1_.getFame(),_loc1_.getForgefire());
          }
          _loc2_.x = 800;
          _loc2_.y = 20;

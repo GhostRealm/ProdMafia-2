@@ -53,7 +53,7 @@ package com.company.assembleegameclient.screens {
          this.backButton_.setVerticalAlign("middle");
          addChild(this.backButton_);
          this.creditDisplay_ = new CreditDisplay();
-         this.creditDisplay_.draw(param1.getCredits(),param1.getFame());
+         this.creditDisplay_.draw(param1.getCredits(),param1.getFame(), param1.getForgefire());
          addChild(this.creditDisplay_);
          _loc6_ = 0;
          while(_loc6_ < ObjectLibrary.playerChars_.length) {
@@ -79,8 +79,8 @@ package com.company.assembleegameclient.screens {
          this.creditDisplay_.y = 20;
       }
       
-      public function updateCreditsAndFame(param1:int, param2:int) : void {
-         this.creditDisplay_.draw(param1,param2);
+      public function updateCreditDisplay(credits:int, fame:int, forgefire:int) : void {
+         this.creditDisplay_.draw(credits, fame, forgefire);
       }
       
       public function update(param1:PlayerModel) : void {

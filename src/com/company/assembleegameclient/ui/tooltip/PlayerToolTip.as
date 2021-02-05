@@ -8,7 +8,9 @@ package com.company.assembleegameclient.ui.tooltip {
    import com.company.assembleegameclient.ui.panels.itemgrids.EquippedGrid;
    import com.company.assembleegameclient.ui.panels.itemgrids.InventoryGrid;
    import flash.events.Event;
-   import kabam.rotmg.game.view.components.StatsView;
+
+import kabam.rotmg.game.view.CreditDisplay;
+import kabam.rotmg.game.view.components.StatsView;
    import kabam.rotmg.text.view.TextFieldDisplayConcrete;
    
    public class PlayerToolTip extends ToolTip {
@@ -29,15 +31,13 @@ package com.company.assembleegameclient.ui.tooltip {
       private var hpBar_:StatusBar;
       
       private var mpBar_:StatusBar;
-      
+
       private var clickMessage_:TextFieldDisplayConcrete;
       
       private var eGrid:EquippedGrid;
 
       private var inv1:InventoryGrid;
-      
-      private var inv2:InventoryGrid;
-      
+
       public function PlayerToolTip(param1:Player) {
          var _loc2_:int = 0;
          super(3552822,0.5,16777215,1);
@@ -89,12 +89,6 @@ package com.company.assembleegameclient.ui.tooltip {
             this.inv1.x = 8;
             this.inv1.y = _loc2_ - 1;
             addChild(this.inv1);
-            if(this.player_.hasBackpack_) {
-               this.inv2 = new InventoryGrid(this.player_,this.player_,12);
-               this.inv2.x = 8;
-               this.inv2.y = this.eGrid.y + this.eGrid.height + 92;
-               addChild(inv2);
-            }
          }
          addEventListener("removedFromStage",this.dispose,false,0,true);
       }
@@ -128,7 +122,6 @@ package com.company.assembleegameclient.ui.tooltip {
          clickMessage_ = null;
          eGrid.dispose();
          inv1 = null;
-         inv2 = null;
          while(this.numChildren > 0) {
             removeChildAt(0);
          }

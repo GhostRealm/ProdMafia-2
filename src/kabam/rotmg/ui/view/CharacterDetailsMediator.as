@@ -4,7 +4,9 @@ package kabam.rotmg.ui.view {
    import com.company.assembleegameclient.parameters.Parameters;
    import com.company.assembleegameclient.ui.exaltation.ExaltationView;
    import com.company.assembleegameclient.ui.icons.IconButtonFactory;
-   import flash.events.MouseEvent;
+import com.company.assembleegameclient.ui.options.Options;
+
+import flash.events.MouseEvent;
    import io.decagames.rotmg.social.SocialPopupView;
    import io.decagames.rotmg.social.model.SocialModel;
    import io.decagames.rotmg.ui.popups.signals.ShowPopupSignal;
@@ -58,7 +60,7 @@ package kabam.rotmg.ui.view {
       
       override public function initialize() : void {
          this.injectFactories();
-         this.view.init(this.hudModel.getPlayerName());
+         this.view.init(this.hudModel.getPlayerName(), this.hudModel.getButtonType());
          this.updateHUD.addOnce(this.onUpdateHUD);
          this.updateHUD.add(this.onDraw);
          this.nameChanged.add(this.onNameChange);
@@ -66,6 +68,8 @@ package kabam.rotmg.ui.view {
          this.socialModel.noInvitationSignal.add(this.clearFriendsIndicator);
          this.socialModel.socialDataSignal.add(this.onFriendsData);
          this.view.initFriendList(this.imageFactory,this.iconButtonFactory,this.onFriendsBtnClicked,Boolean(this.socialModel.hasInvitations));
+         this.view.gotoNexus.add(this.onGotoNexus);
+         this.view.gotoOptions.add(this.onGotoOptions);
       }
       
       override public function destroy() : void {
@@ -95,12 +99,15 @@ package kabam.rotmg.ui.view {
          this.view.iconButtonFactory = this.iconButtonFactory;
          this.view.imageFactory = this.imageFactory;
       }
-      
-      private function onGotoNexus() : void {
+
+      private function onGotoNexus():void {
          this.tellModel.clearRecipients();
          this.hudModel.gameSprite.gsc_.escape();
-         Parameters.data.needsRandomRealm = false;
-         Parameters.save();
+      }
+
+      private function onGotoOptions():void {
+         this.hudModel.gameSprite.mui_.clearInput();
+         this.hudModel.gameSprite.addChild(new Options(this.hudModel.gameSprite));
       }
       
       private function onOpenExaltation() : void {

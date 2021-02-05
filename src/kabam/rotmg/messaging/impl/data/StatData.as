@@ -1,8 +1,10 @@
 package kabam.rotmg.messaging.impl.data {
-   import flash.utils.IDataInput;
+import flash.utils.IDataInput;
    import flash.utils.IDataOutput;
-   
-   public class StatData {
+
+import kabam.rotmg.text.model.TextKey;
+
+public class StatData {
       public static const MAX_HP_STAT:int = 0;
       public static const HP_STAT:int = 1;
       public static const SIZE_STAT:int = 2;
@@ -112,7 +114,7 @@ package kabam.rotmg.messaging.impl.data {
       public static const EXALTED_HEALTH:int = 111;
       public static const EXALTED_MANA:int = 112;
       public static const EXALTATION_BONUS_DAMAGE:int = 113;
-      public static const OWNER_ACCOUNT_ID:int = 114;
+      public static const PET_OWNER_ACCOUNT_ID:int = 114;
       public static const GRAVE_ACCOUNT_ID:int = 115;
       public static const QUICKSLOT_ITEM_1:int = 116;
       public static const QUICKSLOT_ITEM_2:int = 117;
@@ -129,48 +131,32 @@ package kabam.rotmg.messaging.impl.data {
          super();
       }
       
-      public static function statToName(param1:int) : String {
-         var _loc2_:* = param1;
-         switch(_loc2_) {
-            case 0:
-               return "StatData.MaxHP";
-            case 1:
-               return "StatusBar.HealthPoints";
-            case 2:
-               return "StatData.Size";
-            case 3:
-               return "StatData.MaxMP";
-            case 4:
-               return "StatusBar.ManaPoints";
-            case 6:
-               return "StatData.XP";
-            case 7:
-               return "StatData.Level";
-            case 20:
-               return "StatModel.attack.long";
-            case 21:
-               return "StatModel.defense.long";
-            case 22:
-               return "StatModel.speed.long";
-            case 26:
-               return "StatModel.vitality.long";
-            case 27:
-               return "StatModel.wisdom.long";
-            case 28:
-               return "StatModel.dexterity.long";
-            default:
-               return "StatData.UnknownStat";
+      public static function statToName(statId:int) : String {
+         switch (statId) {
+            case StatData.MAX_HP_STAT: return TextKey.STAT_DATA_MAXHP;
+            case StatData.HP_STAT: return TextKey.STATUS_BAR_HEALTH_POINTS;
+            case StatData.SIZE_STAT: return TextKey.STAT_DATA_SIZE;
+            case StatData.MAX_MP_STAT: return TextKey.STAT_DATA_MAXMP;
+            case StatData.MP_STAT: return TextKey.STATUS_BAR_MANA_POINTS;
+            case StatData.EXP_STAT: return TextKey.STAT_DATA_XP;
+            case StatData.LEVEL_STAT: return TextKey.STAT_DATA_LEVEL;
+            case StatData.ATTACK_STAT: return TextKey.STAT_MODEL_ATTACK_LONG;
+            case StatData.DEFENSE_STAT: return TextKey.STAT_MODEL_DEFENSE_LONG;
+            case StatData.SPEED_STAT: return TextKey.STAT_MODEL_SPEED_LONG;
+            case StatData.VITALITY_STAT: return TextKey.STAT_MODEL_VITALITY_LONG;
+            case StatData.WISDOM_STAT: return TextKey.STAT_MODEL_WISDOM_LONG;
+            case StatData.DEXTERITY_STAT: return TextKey.STAT_MODEL_DEXTERITY_LONG;
+            default: return TextKey.STAT_DATA_UNKNOWN_STAT;
          }
       }
       
       public function isStringStat() : Boolean {
-         var _loc1_:* = this.statType_;
-         switch(_loc1_) {
-            case 31:
-            case 62:
-            case 82:
-            case 38:
-            case 54:
+         switch (this.statType_) {
+            case NAME_STAT:
+            case GUILD_NAME_STAT:
+            case PET_NAME_STAT:
+            case ACCOUNT_ID_STAT:
+            case OWNER_ACCOUNT_ID_STAT:
             case GRAVE_ACCOUNT_ID:
                return true;
             default:
@@ -188,19 +174,17 @@ package kabam.rotmg.messaging.impl.data {
          this.secondaryValue = CompressedInt.read(data);
       }
       
-      public function writeToOutput(param1:IDataOutput) : void {
-         param1.writeByte(this.statType_);
-         if(!this.isStringStat()) {
-            param1.writeInt(this.statValue_);
-         } else {
-            param1.writeUTF(this.strStatValue_);
-         }
+      public function writeToOutput(data:IDataOutput) : void {
+         data.writeByte(this.statType_);
+         if (!this.isStringStat())
+            data.writeInt(this.statValue_);
+         else
+            data.writeUTF(this.strStatValue_);
       }
       
       public function toString() : String {
-         if(!this.isStringStat()) {
+         if (!this.isStringStat())
             return "[" + this.statType_ + ": " + this.statValue_ + "]";
-         }
          return "[" + this.statType_ + ": \"" + this.strStatValue_ + "\"]";
       }
    }

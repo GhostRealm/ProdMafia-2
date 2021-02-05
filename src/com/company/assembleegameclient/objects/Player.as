@@ -100,6 +100,8 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
 
       private const NAME_OFFSET_MATRIX:Matrix = new Matrix(1,0,0,1,20,1);
 
+      public var unlockedBlueprints:Vector.<int> = new <int>[];
+
       public var isWalking:Boolean = false;
 
       public var projectileLifeMult:Number = 1.0;
@@ -120,8 +122,6 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
 
       public var forgefire:int = 0;
       public var credits_:int = 0;
-
-      public var tokens_:int = 0;
 
       public var numStars_:int = 0;
 
@@ -964,10 +964,10 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
 
       override public function setAttack(param1:int, param2:Number) : void {
          var _loc4_:XML = ObjectLibrary.xmlLibrary_[param1];
-         if(_loc4_ == null || !("RateOfFire" in _loc4_)) {
+         if(_loc4_ == null) {
             return;
          }
-         var _loc3_:Number = _loc4_.RateOfFire;
+         var _loc3_:Number = !("RateOfFire" in _loc4_) ? 1 : _loc4_.RateOfFire;
          this.attackPeriod_ = 1 / this.attackFrequency() * (1 / _loc3_);
          super.setAttack(param1,param2);
       }
@@ -1120,10 +1120,6 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
 
       public function hasSupporterFeature(param1:int) : Boolean {
          return (this.supporterFlag & param1) == param1;
-      }
-
-      public function setTokens(param1:int) : void {
-         this.tokens_ = param1;
       }
 
       public function setGuildName(param1:String) : void {
@@ -2269,6 +2265,25 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
                return true;
             }
             if (!this.isSick && this.autoHpPotNumber != 0 && (this.hp_ <= this.autoHpPotNumber || this.clientHp <= this.autoHpPotNumber || this.syncedChp <= this.autoHpPotNumber) && time - this.lastHpPotTime > Parameters.data.autohpPotDelay) {
+               len = this.hasBackpack_ ? 20 : 12;
+               slotId = 4;
+               while (slotId < len) {
+                  equipId = this.equipment_[slotId];
+                  if (Parameters.hpPotions.indexOf(equipId) != -1) {
+                     if (time == -1)
+                        time = TimeUtil.getModdedTime();
+
+                     this.map_.gs_.gsc_.useItem(time, this.objectId_, slotId, equipId, this.x_, this.y_, 1);
+
+                     if (time == -1)
+                        time = TimeUtil.getModdedTime();
+                     this.lastHpPotTime = time;
+
+                     return false;
+                  }
+                  slotId++;
+               }
+
                if (Parameters.hpPotions.indexOf(quickSlotItem1) != -1
                        && quickSlotCount1 > 0) {
                   this.map_.gs_.gsc_.useItem(time, this.objectId_,
@@ -2315,23 +2330,6 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
                      time = TimeUtil.getModdedTime();
                   this.lastHpPotTime = time;
                   return false;
-               }
-
-               len = this.hasBackpack_ ? 20 : 12;
-               slotId = 4;
-               while (slotId < len) {
-                  equipId = this.equipment_[slotId];
-                  if (Parameters.hpPotions.indexOf(equipId) != -1) {
-                     if (time == -1)
-                        time = TimeUtil.getModdedTime();
-
-                     this.map_.gs_.gsc_.useItem(time, this.objectId_, slotId, equipId, this.x_, this.y_, 1);
-                     if (time == -1)
-                        time = TimeUtil.getModdedTime();
-                     this.lastHpPotTime = time;
-                     break;
-                  }
-                  slotId++;
                }
             }
          }
@@ -3191,7 +3189,7 @@ import io.decagames.rotmg.supportCampaign.data.SupporterCampaignModel;
          if(param2 == -1) {
             param2 = TimeUtil.getModdedTime();
          }
-         var _loc6_:Number = _loc4_.RateOfFire;
+         var _loc6_:Number = !("RateOfFire" in _loc4_) ? 1 : _loc4_.RateOfFire;
          this.attackPeriod_ = 1 / this.attackFrequency() * (1 / _loc6_);
          if(param2 < attackStart_ + this.attackPeriod_) {
             return;

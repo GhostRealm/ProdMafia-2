@@ -139,6 +139,7 @@ import kabam.rotmg.messaging.impl.incoming.Death;
 import kabam.rotmg.messaging.impl.incoming.EnemyShoot;
 import kabam.rotmg.messaging.impl.incoming.EvolvedMessageHandler;
 import kabam.rotmg.messaging.impl.incoming.EvolvedPetMessage;
+import kabam.rotmg.messaging.impl.incoming.ExaltationClaimResponse;
 import kabam.rotmg.messaging.impl.incoming.ExaltationUpdate;
 import kabam.rotmg.messaging.impl.incoming.Failure;
 import kabam.rotmg.messaging.impl.incoming.File;
@@ -912,8 +913,9 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.map(33).toMessage(ChangePetSkin);
       map.map(EXALTATION_CLAIM).toMessage(ExaltationClaim);
       map.map(FORGE_REQUEST).toMessage(ForgeRequest);
-      map.map(FORGE_RESPONSE).toMessage(ForgeResponse);
       map.map(TEST113).toMessage(Test113);
+      map.map(EXALTATION_CLAIM_RESPONSE).toMessage(ExaltationClaimResponse);
+      map.map(FORGE_RESPONSE).toMessage(ForgeResponse);
       map.map(EXALTATION_UPDATE).toMessage(ExaltationUpdate).toMethod(this.onExaltationUpdate);
       map.map(BLUEPRINT_UPDATE).toMessage(BlueprintUpdate).toMethod(this.onBlueprintUpdate);
       map.map(VAULT_UPDATE).toMessage(VaultUpdate).toMethod(this.onVaultUpdate);
@@ -1213,6 +1215,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.unmap(84);
       map.unmap(EXALTATION_UPDATE);
       map.unmap(EXALTATION_CLAIM);
+      map.unmap(EXALTATION_CLAIM_RESPONSE);
       map.unmap(VAULT_UPDATE);
       map.unmap(FORGE_REQUEST);
       map.unmap(FORGE_RESPONSE);
@@ -2178,7 +2181,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                _loc12_.setFame(statVal);
                continue;
             case 97:
-               _loc12_.setTokens(statVal);
+               //_loc12_.setTokens(statVal);
                continue;
             case 98:
                if(_loc12_) {
@@ -2377,7 +2380,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                continue;
             case StatData.PLAYER_ID:
             case StatData.GRAVE_ACCOUNT_ID:
-            case StatData.OWNER_ACCOUNT_ID:
+            //case StatData.PET_OWNER_ACCOUNT_ID:
                continue;
             case StatData.QUICKSLOT_ITEM_1:
                var plr:Player = go as Player;
@@ -2920,6 +2923,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
    }
 
    private function onBlueprintUpdate(pkt:BlueprintUpdate) : void {
+      this.player.unlockedBlueprints = pkt.unlockedItems;
    }
 
    private function onFailure(param1:Failure) : void {

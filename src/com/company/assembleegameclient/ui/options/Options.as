@@ -308,7 +308,7 @@ package com.company.assembleegameclient.ui.options {
       }
       
       private static function onVSyncToggle() : void {
-         Main.STAGE.vsyncEnabled = Parameters.data.vSync;
+         //Main.STAGE.vsyncEnabled = Parameters.data.vSync;
       }
       
       private static function onFullscreenToggle() : void {
@@ -425,7 +425,7 @@ package com.company.assembleegameclient.ui.options {
          this.addOptionAndPosition(new ChoiceOption("bigLootBags",makeOnOffLabels(),[true,false],"Big Loot Bags","Makes soulbound loot bags twice as big",null));
          this.addOptionAndPosition(new ChoiceOption("alphaOnOthers",makeOnOffLabels(),[true,false],"Make Other Players Transparent","Makes nonlocked players and their pets transparent, toggleable with /ao and transparency level customizable with /alpha 0.2",null));
          this.addOptionAndPosition(new ChoiceOption("showAOGuildies",makeOnOffLabels(),[true,false],"Show Guildmates with Alpha","Makes guildmates always visible when /ao is enabled",null));
-         this.addOptionAndPosition(new ChoiceOption("showFameGoldRealms",makeOnOffLabels(),[true,false],"Always Show Fame/Gold","Makes Fame/Gold always visible when in Realms and Dungeons",null));
+         this.addOptionAndPosition(new ChoiceOption("showFameGoldRealms",makeOnOffLabels(),[true,false],"Always Show Credit Display","Makes the credit display always visible when in Realms and Dungeons",null));
          this.addOptionAndPosition(new ChoiceOption("showEnemyCounter",makeOnOffLabels(),[true,false],"Show Remaining Enemy Counter","Shows the \"Enemies left in dungeon\" in a text area instead of in chat",null));
          this.addOptionAndPosition(new ChoiceOption("showTimers",makeOnOffLabels(),[true,false],"Show Phase Timers","Shows a countdown for enemy phase and custom set timers",null));
          this.addOptionAndPosition(new ChoiceOption("noRotate",makeOnOffLabels(),[true,false],"Disable Shot Rotation","Makes Shots not have their rotation effect, which prevents a lot of lag especially in Lost Halls",null));
@@ -475,7 +475,7 @@ package com.company.assembleegameclient.ui.options {
          this.addOptionAndPosition(new KeyMapper("depositKey","Deposit Key","The key which deposits all your items into the Vault, if possible"));
          this.addOptionAndPosition(new KeyMapper("TogglePlayerFollow","Toggle Player Follow","Set with /follow <name>, press this hotkey to toggle on and off"));
          this.addOptionAndPosition(new ChoiceOption("logErrors",makeOnOffLabels(),[true,false],"Log Errors","This toggles whether to log errors, for debugging purposes",null));
-         this.addOptionAndPosition(new ChoiceOption("tutorialMode",makeOnOffLabels(),[true,false],"Tutorial Mode","This toggles whether to log errors, for debugging purposes",null));
+         this.addOptionAndPosition(new ChoiceOption("tutorialMode",makeOnOffLabels(),[true,false],"Tutorial Mode","This toggles whether to load into the Tutorial when attempting to enter the Nexus",null));
       }
       
       public function addOptionsChoiceOption() : void {

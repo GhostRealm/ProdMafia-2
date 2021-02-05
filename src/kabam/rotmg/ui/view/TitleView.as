@@ -1,8 +1,10 @@
 package kabam.rotmg.ui.view {
-   import com.company.assembleegameclient.screens.AccountScreen;
+import com.company.assembleegameclient.parameters.Parameters;
+import com.company.assembleegameclient.screens.AccountScreen;
    import com.company.assembleegameclient.screens.TitleMenuOption;
    import com.company.assembleegameclient.ui.SoundIcon;
 import com.worlize.gif.GIFPlayer;
+import com.worlize.gif.events.GIFPlayerEvent;
 
 import flash.display.Sprite;
    import flash.filters.DropShadowFilter;
@@ -56,17 +58,21 @@ import kabam.rotmg.text.view.TextFieldDisplayConcrete;
       
       public function init() : void {
          this._buttonFactory = new ButtonFactory();
-         addChild(new DarkLayer());
+         addChildAt(new DarkLayer(), 0);
+
          var player:GIFPlayer = new GIFPlayer();
          player.loadBytes(new Gif() as ByteArray);
-         player.scaleX = 10;
-         player.scaleY = 10;
-         addChild(player);
-         this.menuOptionsBar = this.makeMenuOptionsBar();
-         addChild(this.menuOptionsBar);
-         addChild(new AccountScreen());
-         this.makeChildren();
-         addChild(new SoundIcon());
+         player.addEventListener(GIFPlayerEvent.COMPLETE, function (_:GIFPlayerEvent) : void {
+            player.scaleX = 800 / player.width;
+            player.scaleY = 600 / player.height;
+            addChildAt(player, 0);
+         });
+
+         menuOptionsBar = makeMenuOptionsBar();
+         addChildAt(menuOptionsBar, 1);
+         addChildAt(new AccountScreen(), 2);
+         makeChildren();
+         addChildAt(new SoundIcon(), 3);
       }
       
       public function makeText() : TextFieldDisplayConcrete {
@@ -78,10 +84,6 @@ import kabam.rotmg.text.view.TextFieldDisplayConcrete;
       public function initialize(param1:EnvironmentData) : void {
          this.data = param1;
          this.updateVersionText();
-      }
-      
-      public function putNoticeTagToOption(param1:TitleMenuOption, param2:String, param3:int = 14, param4:uint = 10092390, param5:Boolean = true) : void {
-         param1.createNoticeTag(param2,param3,param4,param5);
       }
       
       private function makeMenuOptionsBar() : MenuOptionsBar {
@@ -111,7 +113,7 @@ import kabam.rotmg.text.view.TextFieldDisplayConcrete;
       }
       
       private function updateVersionText() : void {
-         this.versionText.setStringBuilder(new StaticStringBuilder(this.data.buildLabel));
+         this.versionText.setStringBuilder(new StaticStringBuilder("RotMG #" + Parameters.CLIENT_VERSION));
       }
    }
 }

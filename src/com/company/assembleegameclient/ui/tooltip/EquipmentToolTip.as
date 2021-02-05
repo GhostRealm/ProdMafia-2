@@ -1,15 +1,20 @@
 package com.company.assembleegameclient.ui.tooltip {
    import com.company.assembleegameclient.game.events.KeyInfoResponseSignal;
-   import com.company.assembleegameclient.objects.ObjectLibrary;
+import com.company.assembleegameclient.objects.ForgeProperties;
+import com.company.assembleegameclient.objects.ObjectLibrary;
    import com.company.assembleegameclient.objects.Player;
    import com.company.assembleegameclient.parameters.Parameters;
    import com.company.assembleegameclient.ui.LineBreakDesign;
    import com.company.assembleegameclient.util.FilterUtil;
    import com.company.assembleegameclient.util.MathUtil;
-   import com.company.assembleegameclient.util.TierUtil;
-   import com.company.util.BitmapUtil;
+import com.company.assembleegameclient.util.TextureRedrawer;
+import com.company.assembleegameclient.util.TierUtil;
+import com.company.util.AssetLibrary;
+import com.company.util.BitmapUtil;
    import com.company.util.KeyCodes;
-   import flash.display.Bitmap;
+
+import flash.display.Bitmap;
+import flash.display.Bitmap;
    import flash.display.BitmapData;
    import flash.filters.DropShadowFilter;
    import flash.utils.Dictionary;
@@ -98,7 +103,14 @@ package com.company.assembleegameclient.ui.tooltip {
       private var sameActivateEffect:Boolean;
       
       private var itemIDText:TextFieldDisplayConcrete;
-      
+
+      private var commonMaterialIcon:Bitmap,
+                  rareMaterialIcon:Bitmap,
+                  legendaryMaterialIcon:Bitmap;
+      private var commonMaterialText:TextFieldDisplayConcrete,
+                  rareMaterialText:TextFieldDisplayConcrete,
+                  legendaryMaterialText:TextFieldDisplayConcrete;
+
       public function EquipmentToolTip(param1:int, param2:Player, param3:int, param4:String) {
          var _loc5_:Boolean = false;
          uniqueEffects = new Vector.<Effect>();
@@ -154,6 +166,7 @@ package com.company.assembleegameclient.ui.tooltip {
          this.addUniqueEffectsToList();
          this.sameActivateEffect = false;
          this.addActivateTagsToEffectsList();
+         this.addForgefireReductionToEffectsList();
          this.addNumProjectiles();
          this.addProjectileTagsToEffectsList();
          this.addRateOfFire();
@@ -171,6 +184,7 @@ package com.company.assembleegameclient.ui.tooltip {
          this.makeItemPowerText();
          this.makeSupporterPointsText();
          this.makeQuickSlotText();
+         this.addMaterialInfo();
       }
       
       override protected function alignUI() : void {
@@ -216,33 +230,86 @@ package com.company.assembleegameclient.ui.tooltip {
             this.line2.y = this.effectsText.y + this.effectsText.height + 8;
             this.line2.y;
          }
-         var _loc1_:uint = this.line2.y + 8;
+         var curY:uint = this.line2.y + 8;
          if(this.restrictionsText) {
             this.restrictionsText.x = 4;
-            this.restrictionsText.y = _loc1_;
+            this.restrictionsText.y = curY;
             this.restrictionsText.height;
-            _loc1_ = _loc1_ + this.restrictionsText.height;
+            curY = curY + this.restrictionsText.height;
          }
          if(this.powerText) {
             if(contains(this.powerText)) {
                this.powerText.x = 4;
-               this.powerText.y = _loc1_;
+               this.powerText.y = curY;
                this.powerText.height;
-               _loc1_ = _loc1_ + this.powerText.height;
+               curY = curY + this.powerText.height;
             }
          }
          if(this.quickSlotAllowedText) {
             if(contains(this.quickSlotAllowedText)) {
                this.quickSlotAllowedText.x = 4;
-               this.quickSlotAllowedText.y = _loc1_;
+               this.quickSlotAllowedText.y = curY;
                this.quickSlotAllowedText.height;
-               _loc1_ = _loc1_ + this.quickSlotAllowedText.height;
+               curY = curY + this.quickSlotAllowedText.height;
             }
          }
          if(this.supporterPointsText) {
             if(contains(this.supporterPointsText)) {
                this.supporterPointsText.x = 4;
-               this.supporterPointsText.y = _loc1_;
+               this.supporterPointsText.y = curY;
+               this.supporterPointsText.height;
+               curY = curY + this.supporterPointsText.height;
+            }
+         }
+
+         var curX:int = 4;
+         if (this.commonMaterialIcon) {
+            if (contains(this.commonMaterialIcon)) {
+               this.commonMaterialIcon.x = curX - 10;
+               this.commonMaterialIcon.y = curY - 13;
+               curX += this.commonMaterialIcon.width - 15;
+            }
+         }
+
+         if (this.commonMaterialText) {
+            if (contains(this.commonMaterialText)) {
+               this.commonMaterialText.x = curX;
+               this.commonMaterialText.y = curY;
+               this.commonMaterialText.height;
+               curX += this.commonMaterialText.width + 10;
+            }
+         }
+
+         if (this.rareMaterialIcon) {
+            if (contains(this.rareMaterialIcon)) {
+               this.rareMaterialIcon.x = curX - 10;
+               this.rareMaterialIcon.y = curY - 13;
+               curX += this.rareMaterialIcon.width - 15;
+            }
+         }
+
+         if (this.rareMaterialText) {
+            if (contains(this.rareMaterialText)) {
+               this.rareMaterialText.x = curX;
+               this.rareMaterialText.y = curY;
+               this.rareMaterialText.height;
+               curX += this.rareMaterialText.width + 10;
+            }
+         }
+
+         if (this.legendaryMaterialIcon) {
+            if (contains(this.legendaryMaterialIcon)) {
+               this.legendaryMaterialIcon.x = curX - 10;
+               this.legendaryMaterialIcon.y = curY - 13;
+               curX += this.legendaryMaterialIcon.width - 15;
+            }
+         }
+
+         if (this.legendaryMaterialText) {
+            if (contains(this.legendaryMaterialText)) {
+               this.legendaryMaterialText.x = curX;
+               this.legendaryMaterialText.y = curY;
+               this.legendaryMaterialText.height;
             }
          }
       }
@@ -376,16 +443,61 @@ package com.company.assembleegameclient.ui.tooltip {
             addChild(this.quickSlotAllowedText);
          }
       }
-      
-      private function onKeyInfoResponse(param1:KeyInfoResponse) : void {
-         this.keyInfoResponse.remove(this.onKeyInfoResponse);
-         this.removeTitle();
-         this.removeDesc();
-         this.titleOverride = param1.name;
-         this.descriptionOverride = param1.description;
-         keyInfo[this.originalObjectType] = [param1.name,param1.description,param1.creator];
-         this.addTitle();
-         this.addDescriptionText();
+
+      private function addMaterialInfo() : void {
+         var forgeProps:ForgeProperties = ObjectLibrary.forgePropsLibrary[int(this.objectXML.@type)];
+         if (forgeProps && forgeProps.objType != -1) {
+            if (forgeProps.commonResourceGain > 0) {
+               var bmpd:BitmapData = BitmapUtil.cropToBitmapData(
+                       AssetLibrary.getImage("material_common"), 4, 4, 8, 8);
+               this.commonMaterialIcon = new Bitmap(TextureRedrawer.redraw(
+                       bmpd, 40, false, 0));
+               addChild(this.commonMaterialIcon);
+
+               this.commonMaterialText = new TextFieldDisplayConcrete()
+                       .setSize(12)
+                       .setColor(0xFFFFFF)
+                       .setBold(true);
+               this.commonMaterialText.setStringBuilder(new StaticStringBuilder().setString(forgeProps.commonResourceGain.toString()));
+               this.commonMaterialText.filters = FilterUtil.getStandardDropShadowFilter();
+               waiter.push(this.commonMaterialText.textChanged);
+               addChild(this.commonMaterialText);
+            }
+
+            if (forgeProps.rareResourceGain > 0) {
+               var bmpd:BitmapData = BitmapUtil.cropToBitmapData(
+                       AssetLibrary.getImage("material_rare"), 4, 4, 8, 8);
+               this.rareMaterialIcon = new Bitmap(TextureRedrawer.redraw(
+                       bmpd, 40, false, 0));
+               addChild(this.rareMaterialIcon);
+
+               this.rareMaterialText = new TextFieldDisplayConcrete()
+                       .setSize(12)
+                       .setColor(0xFFFFFF)
+                       .setBold(true);
+               this.rareMaterialText.setStringBuilder(new StaticStringBuilder().setString(forgeProps.rareResourceGain.toString()));
+               this.rareMaterialText.filters = FilterUtil.getStandardDropShadowFilter();
+               waiter.push(this.rareMaterialText.textChanged);
+               addChild(this.rareMaterialText);
+            }
+
+            if (forgeProps.legendaryResourceGain > 0) {
+               var bmpd:BitmapData = BitmapUtil.cropToBitmapData(
+                       AssetLibrary.getImage("material_legendary"), 4, 4, 8, 8);
+               this.legendaryMaterialIcon = new Bitmap(TextureRedrawer.redraw(
+                       bmpd, 40, false, 0));
+               addChild(this.legendaryMaterialIcon);
+
+               this.legendaryMaterialText = new TextFieldDisplayConcrete()
+                       .setSize(12)
+                       .setColor(0xFFFFFF)
+                       .setBold(true);
+               this.legendaryMaterialText.setStringBuilder(new StaticStringBuilder().setString(forgeProps.legendaryResourceGain.toString()));
+               this.legendaryMaterialText.filters = FilterUtil.getStandardDropShadowFilter();
+               waiter.push(this.legendaryMaterialText.textChanged);
+               addChild(this.legendaryMaterialText);
+            }
+         }
       }
       
       private function addUniqueEffectsToList() : void {
@@ -660,6 +772,17 @@ package com.company.assembleegameclient.ui.tooltip {
             this.effects.push(new Effect("Cooldown: {cd}",{"cd":TooltipHelper.compareAndGetPlural(_loc1_.a,_loc1_.b,"second",false)}));
          }
       }
+
+      private function addForgefireReductionToEffectsList() : void {
+         var forgeProps:ForgeProperties = ObjectLibrary.forgePropsLibrary[int(this.objectXML.@type)];
+         if (forgeProps && forgeProps.forgefireDismantle != 0 && forgeProps.canDismantle) {
+            var repl:Object = {};
+            repl["amt"] = new LineBuilder().setParams(Math.abs(forgeProps.forgefireDismantle).toString());
+            this.effects.push(new Effect((forgeProps.forgefireDismantle > 0 ? "Increases" : "Reduces") +
+                    " Forgefire cost by {amt} when dismantled",
+                    repl).setReplacementsColor(16777103));
+         }
+      }
       
       private function addActivateTagsToEffectsList() : void {
          var _loc17_:* = null;
@@ -677,7 +800,7 @@ package com.company.assembleegameclient.ui.tooltip {
          var _loc30_:* = null;
          var _loc1_:* = null;
          var _loc14_:* = null;
-         var _loc4_:* = null;
+         var repl:* = null;
          var _loc3_:Number = NaN;
          var _loc12_:Number = NaN;
          var _loc8_:Number = NaN;
@@ -857,27 +980,33 @@ package com.company.assembleegameclient.ui.tooltip {
                   case "IncrementStat":
                      _loc22_ = _loc17_.@stat;
                      _loc11_ = _loc17_.@amount;
-                     _loc4_ = {};
+                     repl = {};
                      if(_loc22_ != 1 && _loc22_ != 4) {
                         _loc23_ = "EquipmentToolTip.permanentlyIncreases";
-                        _loc4_["statName"] = new LineBuilder().setParams(StatData.statToName(_loc22_));
-                        this.effects.push(new Effect(_loc23_,_loc4_).setColor(16777103));
+                        repl["statName"] = new LineBuilder().setParams(StatData.statToName(_loc22_));
+                        this.effects.push(new Effect(_loc23_,repl).setColor(16777103));
                      } else {
                         _loc23_ = "blank";
                         _loc29_ = new AppendingLineBuilder().setDelimiter(" ");
                         _loc29_.pushParams("blank",{"data":new StaticStringBuilder("+" + _loc11_)});
                         _loc29_.pushParams(StatData.statToName(_loc22_));
-                        _loc4_["data"] = _loc29_;
-                        this.effects.push(new Effect(_loc23_,_loc4_));
+                        repl["data"] = _loc29_;
+                        this.effects.push(new Effect(_loc23_,repl));
                      }
                      continue;
                   case "UnlockForgeBlueprint":
-                     _loc4_ = {};
+                     repl = {};
                      var items:String = _loc17_.@id;
                      items = items.replace(/,/g,  ", ");
-                     _loc4_["items"] = new LineBuilder().setParams(items);
+                     repl["items"] = new LineBuilder().setParams(items);
                      this.effects.push(new Effect("Unlocks the following items: {items}",
-                             _loc4_).setReplacementsColor(16777103));
+                             repl).setReplacementsColor(16777103));
+                     continue;
+                  case "BoostForgeEnergy":
+                     repl = {};
+                     repl["amt"] = new LineBuilder().setParams(_loc17_.@amount);
+                     this.effects.push(new Effect("Recharges up to {amt} Forgefire",
+                             repl).setReplacementsColor(16777103));
                      continue;
                   case "BoostRange":
                      continue;

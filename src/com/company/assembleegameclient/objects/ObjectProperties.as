@@ -84,7 +84,7 @@ package com.company.assembleegameclient.objects {
       public var oldSound_:String = null;
       
       public var projectiles_:Dictionary;
-      
+
       public var maxRange:Number = -1;
       
       public var rateOfFire_:Number;
@@ -117,6 +117,8 @@ package com.company.assembleegameclient.objects {
 
       public var maxQuickStack:int = -1;
 
+      public var forgeProperties:ForgeProperties;
+
       public var class_:String;
       
       public function ObjectProperties(param1:XML) {
@@ -138,7 +140,6 @@ package com.company.assembleegameclient.objects {
          this.type_ = int(param1.@type);
          this.id_ = String(param1.@id);
          this.class_ = param1.Class;
-         this.displayId_ = this.id_;
          if("DisplayId" in param1) {
             this.displayId_ = param1.DisplayId;
          }
@@ -227,7 +228,7 @@ package com.company.assembleegameclient.objects {
                this.maxRange = _loc13_.maxProjTravel_;
             }
          }
-         this.rateOfFire_ = "RateOfFire" in param1?param1.RateOfFire:0;
+         this.rateOfFire_ = "RateOfFire" in param1?param1.RateOfFire:1;
          this.angleCorrection_ = "AngleCorrection" in param1?param1.AngleCorrection * 0.785398163397448:0;
          this.rotation_ = "Rotation" in param1?param1.Rotation:0;
          if("BloodProb" in param1) {

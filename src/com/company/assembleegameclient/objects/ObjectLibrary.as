@@ -17,7 +17,11 @@ package com.company.assembleegameclient.objects {
       public static const IMAGE_SET_NAME:String = "lofiObj3";
       
       public static const IMAGE_ID:int = 255;
-      
+
+      public static const defaultForgeables:Vector.<int> = new <int>[];
+
+      public static const forgePropsLibrary:Dictionary = new Dictionary();
+
       public static const propsLibrary_:Dictionary = new Dictionary();
       
       public static const xmlLibrary_:Dictionary = new Dictionary();
@@ -25,7 +29,9 @@ package com.company.assembleegameclient.objects {
       public static const setLibrary_:Dictionary = new Dictionary();
       
       public static const idToType_:Dictionary = new Dictionary();
-      
+
+      public static const idToTypeLower:Dictionary = new Dictionary();
+
       public static const typeToDisplayId_:Dictionary = new Dictionary();
       
       public static const typeToTextureData_:Dictionary = new Dictionary();
@@ -122,13 +128,24 @@ package com.company.assembleegameclient.objects {
          dungeonsXMLLibrary_[currentDungeon] = new Dictionary(true);
          parseFromXML(param2,parseDungeonCallbak);
       }
+
+      public static function parseForgeXML(xml:XML) : void {
+         var objType:int, objId:String;
+         for each (var child:XML in xml.ForgeProperties) {
+            objType = child.@type; objId = child.@id;
+            var props:ForgeProperties = new ForgeProperties(child);
+            forgePropsLibrary[objType] = props;
+            if (props.canCraft && !props.blueprintRequired)
+               defaultForgeables.push(objType);
+         }
+      }
       
       public static function parseFromXML(param1:XML, param2:Function = null) : void {
          var _loc6_:int = 0;
          var _loc8_:Boolean = false;
          var _loc10_:int = 0;
          var _loc9_:* = null;
-         var _loc11_:* = null;
+         var _loc11_:String = null;
          var _loc7_:* = null;
          var _loc4_:* = [29053,29053,29054,29258,29259,29260,29261,29262,29308,29309,29550,29551,2050,2051,2052,2053,6282];
          var _loc3_:* = param1.Object;
@@ -155,6 +172,7 @@ package com.company.assembleegameclient.objects {
                propsLibrary_[_loc6_] = new ObjectProperties(_loc9_);
                xmlLibrary_[_loc6_] = _loc9_;
                idToType_[_loc11_] = _loc6_;
+               idToTypeLower[_loc11_.toLowerCase()] = _loc6_;
                typeToDisplayId_[_loc6_] = _loc7_;
                if(param2) {
                   param2(_loc6_,_loc9_);

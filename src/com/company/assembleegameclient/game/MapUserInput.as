@@ -3,30 +3,23 @@ import com.company.assembleegameclient.objects.GameObject;
 import com.company.assembleegameclient.objects.ObjectLibrary;
 import com.company.assembleegameclient.objects.Player;
 import com.company.assembleegameclient.parameters.Parameters;
-import com.company.assembleegameclient.parameters.Parameters;
 import com.company.assembleegameclient.ui.options.Options;
 import com.company.assembleegameclient.util.TimeUtil;
-import com.company.util.KeyCodes;
 import com.company.util.PointUtil;
+
 import flash.display.Stage;
 import flash.events.Event;
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
 import flash.geom.Matrix3D;
-import flash.geom.Point;
 import flash.geom.Vector3D;
 import flash.system.Capabilities;
-import flash.system.System;
-import flash.utils.setTimeout;
 
 import io.decagames.rotmg.social.SocialPopupView;
 import io.decagames.rotmg.ui.popups.signals.CloseAllPopupsSignal;
 import io.decagames.rotmg.ui.popups.signals.ClosePopupByClassSignal;
 import io.decagames.rotmg.ui.popups.signals.ShowPopupSignal;
 
-import kabam.rotmg.account.core.Account;
-
-import kabam.rotmg.appengine.api.AppEngineClient;
 import kabam.rotmg.chat.control.ParseChatMessageSignal;
 import kabam.rotmg.core.StaticInjectorContext;
 import kabam.rotmg.core.view.Layers;
@@ -34,7 +27,6 @@ import kabam.rotmg.dialogs.control.CloseDialogsSignal;
 import kabam.rotmg.dialogs.control.OpenDialogSignal;
 import kabam.rotmg.game.model.GameInitData;
 import kabam.rotmg.game.model.PotionInventoryModel;
-import kabam.rotmg.game.model.UseBuyPotionVO;
 import kabam.rotmg.game.signals.AddTextLineSignal;
 import kabam.rotmg.game.signals.ExitGameSignal;
 import kabam.rotmg.game.signals.GiftStatusUpdateSignal;
@@ -47,7 +39,9 @@ import kabam.rotmg.servers.api.Server;
 import kabam.rotmg.ui.model.TabStripModel;
 import kabam.rotmg.ui.signals.EnterGameSignal;
 import kabam.rotmg.ui.signals.ToggleRealmQuestsDisplaySignal;
+
 import net.hires.debug.Stats;
+
 import org.swiftsuspenders.Injector;
 
 public class MapUserInput {
@@ -530,6 +524,33 @@ public class MapUserInput {
          case Parameters.data.walkKey:
             this.isWalking = true;
             return;
+         /*case KeyCodes.PAGE_DOWN:
+            var vault:GameObject = null;
+            for each (var go:GameObject in gs.map.goDict_)
+               if (go.objectType_ == 0x504) {
+                  vault = go;
+                  break;
+               }
+
+            var empty:Vector.<int> = new Vector.<int>();
+
+            for (var i:int = 4; i < player.equipment_.length; i++)
+               if (player.equipment_[i] == -1)
+                  empty.push(i);
+
+            for (i = 0; i < Math.min(empty.length, vault.equipment_.length); i++)
+               gs.gsc_.invSwap(gs.map.player_,
+                       vault,
+                       i,
+                       vault.equipment_[i],
+                       gs.map.player_,
+                       empty[i],
+                       -1,
+                       i * 550);
+
+            if (Parameters.lastRecon)
+               gs.dispatchEvent(Parameters.lastRecon);
+            return;*/
          case Parameters.data.depositKey:
             var vault:GameObject = null;
             for each (var go:GameObject in gs.map.goDict_)

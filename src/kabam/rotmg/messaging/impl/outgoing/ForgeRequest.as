@@ -21,7 +21,7 @@ public class ForgeRequest extends OutgoingMessage {
    }
 
    override public function toString() : String {
-      return formatToString("FORGEREQUEST", "selection", "offers");
+      return formatToString("FORGE_REQUEST", "itemId", "offers");
    }
 }
 }

@@ -5,11 +5,9 @@ package com.company.util {
    import flash.utils.Dictionary;
    
    public class AssetLibrary {
-      
       public static var imageSets_:Dictionary = new Dictionary();
-      
+      public static var images:Dictionary = new Dictionary();
       private static var sounds_:Dictionary = new Dictionary();
-       
       
       public function AssetLibrary(param1:StaticEnforcer_1918) {
          super();
@@ -17,6 +15,10 @@ package com.company.util {
       
       public static function addImageSet(param1:String, param2:ImageSet) : void {
          imageSets_[param1] = param2;
+      }
+
+      public static function addImage(imageName:String, bmpd:BitmapData) : void {
+         images[imageName] = bmpd;
       }
       
       public static function addToImageSet(param1:String, param2:BitmapData) : void {
@@ -39,7 +41,11 @@ package com.company.util {
       public static function getImageSet(param1:String) : ImageSet {
          return imageSets_[param1];
       }
-      
+
+      public static function getImage(imageName:String) : BitmapData {
+         return images[imageName];
+      }
+
       public static function getImageFromSet(param1:String, param2:int) : BitmapData {
          var _loc3_:ImageSet = imageSets_[param1];
          if(!_loc3_) {

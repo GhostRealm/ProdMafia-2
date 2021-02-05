@@ -13,11 +13,11 @@ public class ForgeResponse extends IncomingMessage {
     }
 
     override public function parseFromInput(data:IDataInput) : void {
-        /*this.success = data.readBoolean();
+        this.success = data.readBoolean();
         this.results.length = 0;
         var resultsLen:int = data.readByte();
         for (var i:int = 0; i < resultsLen; i++)
-        this.results.push()*/
+            this.results[i].parseFromInput(data);
     }
 
     override public function toString() : String {

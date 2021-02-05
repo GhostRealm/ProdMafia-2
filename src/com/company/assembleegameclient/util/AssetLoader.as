@@ -6,6 +6,7 @@ import com.company.assembleegameclient.parameters.Parameters;
 import com.company.assembleegameclient.sound.IMusic;
 import com.company.assembleegameclient.sound.SFX;
 import com.company.assembleegameclient.sound.SoundEffectLibrary;
+import com.company.assembleegameclient.ui.forge.forgeProperties;
 import com.company.assembleegameclient.ui.options.Options;
 import com.company.util.AssetLibrary;
 import com.company.util.BitmapUtil;
@@ -266,6 +267,15 @@ public class AssetLoader {
       atlases.length = 0;
    }
 
+   private static function addIndividualSprites() : void {
+      for each (var cls:* in EmbeddedAssets.individualSprites) {
+         var str:String = cls.toLocaleString();
+         str = str.substr("[object ".length);
+         str = str.substr(0, str.length - 1); // ']'
+         AssetLibrary.addImage(str, cls.bitmapData);
+      }
+   }
+
    private static function addSoundEffects() : void {
       SoundEffectLibrary.load("button_click");
       SoundEffectLibrary.load("death_screen");
@@ -308,10 +318,12 @@ public class AssetLoader {
 
    public function load() : void {
       addImages();
+      addIndividualSprites();
       parseParticleEffects();
       parseGroundFiles();
       parseObjectFiles();
       addSoundEffects();
+      ObjectLibrary.parseForgeXML(XML(new forgeProperties()));
       Parameters.load();
       Options.refreshCursor();
       this.music.load();

@@ -31,19 +31,13 @@ package kabam.rotmg.account.core.services {
       private static const ONE_SECOND_IN_MS:int = 1000;
       
       private static const MAX_RETRIES:int = 7;
-       
+
       
       [Inject]
       public var account:Account;
       
       [Inject]
       public var client:AppEngineClient;
-      
-      [Inject]
-      public var model:PlayerModel;
-      
-      [Inject]
-      public var seasonalEventModel:SeasonalEventModel;
       
       [Inject]
       public var setLoadingMessage:SetLoadingMessageSignal;
@@ -61,30 +55,14 @@ package kabam.rotmg.account.core.services {
       public var openDialog:OpenDialogSignal;
       
       [Inject]
-      public var closeDialogs:CloseDialogsSignal;
-      
-      [Inject]
       public var securityQuestionsModel:SecurityQuestionsModel;
-      
-      [Inject]
-      public var setScreenWithValidData:SetScreenWithValidDataSignal;
-      
-      [Inject]
-      public var closePopupSignal:ClosePopupSignal;
-      
-      [Inject]
-      public var showPopupSignal:ShowPopupSignal;
       
       private var requestData:Object;
       
       private var retryTimer:Timer;
       
       private var numRetries:int = 0;
-      
-      private var fromMigration:Boolean = false;
-      
-      private var seasonalEventErrorPopUp:SeasonalEventErrorPopup;
-      
+
       public function GetCharListTask() {
          super();
       }
@@ -111,6 +89,7 @@ package kabam.rotmg.account.core.services {
       }
       
       private function onComplete(param1:Boolean, param2:*) : void {
+         completeTask(true);
          if(param1) {
             this.onListComplete(param2);
          } else {
@@ -119,90 +98,39 @@ package kabam.rotmg.account.core.services {
       }
       
       private function onListComplete(param1:String) : void {
-         var _loc5_:int = 0;
-         var _loc4_:* = undefined;
-         var _loc7_:Number = NaN;
-         var _loc6_:* = null;
          var _loc3_:* = null;
          var _loc2_:XML = new XML(param1);
-         if("MigrateStatus" in _loc2_) {
-            _loc7_ = _loc2_.MigrateStatus;
-            if(_loc7_ == 5) {
-               this.sendRequest();
-            }
-            _loc6_ = new MigrationDialog(this.account,_loc7_);
-            this.fromMigration = true;
-            _loc6_.done.addOnce(this.sendRequest);
-            _loc6_.cancel.addOnce(this.clearAccountAndReloadCharacters);
-            this.openDialog.dispatch(_loc6_);
-         } else {
-            if("Account" in _loc2_) {
-               if(this.account is WebAccount) {
-                  WebAccount(this.account).userDisplayName = _loc2_.Account[0].Name;
-                  WebAccount(this.account).paymentProvider = _loc2_.Account[0].PaymentProvider;
-                  if("PaymentData" in _loc2_.Account[0]) {
-                     WebAccount(this.account).paymentData = _loc2_.Account[0].PaymentData;
-                  }
-               }
-               this.account.creationDate = new Date(_loc2_.Account[0].CreationTimestamp * 1000);
-               if("SecurityQuestions" in _loc2_.Account[0]) {
-                  this.securityQuestionsModel.showSecurityQuestionsOnStartup = !Parameters.data.skipPopups && !Parameters.ignoringSecurityQuestions && _loc2_.Account[0].SecurityQuestions[0].ShowSecurityQuestionsDialog[0] == "1";
-                  this.securityQuestionsModel.clearQuestionsList();
-                  _loc5_ = 0;
-                  _loc4_ = _loc2_.Account[0].SecurityQuestions[0].SecurityQuestionsKeys[0].SecurityQuestionsKey;
-                  var _loc9_:int = 0;
-                  var _loc8_:* = _loc2_.Account[0].SecurityQuestions[0].SecurityQuestionsKeys[0].SecurityQuestionsKey;
-                  for each(_loc3_ in _loc2_.Account[0].SecurityQuestions[0].SecurityQuestionsKeys[0].SecurityQuestionsKey) {
-                     this.securityQuestionsModel.addSecurityQuestion(_loc3_.toString());
-                  }
+         if("Account" in _loc2_) {
+            this.account.creationDate = new Date(_loc2_.Account[0].CreationTimestamp * 1000);
+            if("SecurityQuestions" in _loc2_.Account[0]) {
+               this.securityQuestionsModel.showSecurityQuestionsOnStartup = !Parameters.data.skipPopups && !Parameters.ignoringSecurityQuestions && _loc2_.Account[0].SecurityQuestions[0].ShowSecurityQuestionsDialog[0] == "1";
+               this.securityQuestionsModel.clearQuestionsList();
+               for each(_loc3_ in _loc2_.Account[0].SecurityQuestions[0].SecurityQuestionsKeys[0].SecurityQuestionsKey) {
+                  this.securityQuestionsModel.addSecurityQuestion(_loc3_.toString());
                }
             }
-            if(_loc2_ && this.seasonalEventModel.isChallenger == 1 && _loc2_.Account[0].hasOwnProperty("RemainingLives")) {
-               this.seasonalEventModel.remainingCharacters = _loc2_.Account[0].RemainingLives;
-            }
-            this.charListData.dispatch(_loc2_);
-            if(!this.model.isLogOutLogIn) {
-               this.charListLoadedSignal.dispatch();
-            }
-            this.model.isLogOutLogIn = false;
-            completeTask(true);
          }
+         this.charListData.dispatch(_loc2_);
+         this.charListLoadedSignal.dispatch();
          if(this.retryTimer != null) {
             this.stopRetryTimer();
          }
       }
       
       private function onTextError(param1:String) : void {
-         var _loc2_:* = null;
          if(this.numRetries < 7) {
             this.setLoadingMessage.dispatch("Loading.text");
          } else {
             this.setLoadingMessage.dispatch("error.loadError");
          }
-         if(param1 == "Account credentials not valid") {
-            if(this.fromMigration) {
-               _loc2_ = new WebLoginDialog();
-               _loc2_.setError("Error.invalidPassword");
-               _loc2_.setEmail(this.account.getUserId());
-               StaticInjectorContext.getInjector().getInstance(OpenDialogSignal).dispatch(_loc2_);
-            }
+         if (param1 == "Account credentials not valid") {
             this.clearAccountAndReloadCharacters();
          } else if(param1 == "Account is under maintenance") {
             this.setLoadingMessage.dispatch("This account has been banned");
             this.account.clear();
-         } else if(param1 == "Account has fame lower than minimal for the season") {
-            this.showSeasonalErrorPopUp(param1);
-         } else if(param1 == "No more live left for the current season.") {
-            this.showSeasonalErrorPopUp(param1);
          } else {
             this.waitForASecondThenRetryRequest();
          }
-      }
-      
-      private function showSeasonalErrorPopUp(param1:String) : void {
-         this.seasonalEventErrorPopUp = new SeasonalEventErrorPopup(param1);
-         this.seasonalEventErrorPopUp.okButton.addEventListener("click",this.onSeasonalErrorPopUpClose);
-         this.showPopupSignal.dispatch(this.seasonalEventErrorPopUp);
       }
       
       private function clearAccountAndReloadCharacters() : void {
@@ -225,17 +153,7 @@ package kabam.rotmg.account.core.services {
          this.retryTimer.removeEventListener("timerComplete",this.onRetryTimer);
          this.retryTimer = null;
       }
-      
-      private function onSeasonalErrorPopUpClose(param1:MouseEvent) : void {
-         this.seasonalEventErrorPopUp.okButton.removeEventListener("click",this.onSeasonalErrorPopUpClose);
-         var _loc2_:String = this.seasonalEventErrorPopUp.message;
-         this.closePopupSignal.dispatch(this.seasonalEventErrorPopUp);
-         this.seasonalEventModel.isChallenger = 0;
-         if(_loc2_ == "Account has fame lower than minimal for the season" || _loc2_ == "No more live left for the current season.") {
-            this.setScreenWithValidData.dispatch(new CharacterSelectionAndNewsScreen());
-         }
-      }
-      
+
       private function onRetryTimer(param1:TimerEvent) : void {
          this.stopRetryTimer();
          if(this.numRetries < 7) {

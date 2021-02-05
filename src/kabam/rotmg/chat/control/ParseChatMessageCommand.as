@@ -1,9 +1,11 @@
 package kabam.rotmg.chat.control {
 import com.company.assembleegameclient.game.GameSprite;
+import com.company.assembleegameclient.objects.ForgeProperties;
 import com.company.assembleegameclient.objects.GameObject;
 import com.company.assembleegameclient.objects.ObjectLibrary;
 import com.company.assembleegameclient.objects.Player;
 import com.company.assembleegameclient.parameters.Parameters;
+import com.company.assembleegameclient.ui.Slot;
 import com.company.assembleegameclient.util.TimeUtil;
 import com.company.util.StringUtils;
 import flash.events.Event;
@@ -20,10 +22,14 @@ import kabam.rotmg.account.core.Account;
 import kabam.rotmg.account.core.services.GetConCharListTask;
 import kabam.rotmg.account.core.services.GetConServersTask;
 import kabam.rotmg.chat.model.ChatMessage;
+import kabam.rotmg.chat.model.ChatMessage;
+import kabam.rotmg.chat.model.ChatMessage;
+import kabam.rotmg.chat.model.ChatMessage;
 import kabam.rotmg.core.StaticInjectorContext;
 import kabam.rotmg.game.model.GameInitData;
 import kabam.rotmg.game.signals.AddTextLineSignal;
 import kabam.rotmg.game.signals.PlayGameSignal;
+import kabam.rotmg.messaging.impl.data.SlotObjectData;
 import kabam.rotmg.servers.api.Server;
 import kabam.rotmg.ui.model.HUDModel;
 import kabam.rotmg.ui.signals.EnterGameSignal;
@@ -466,6 +472,85 @@ public class ParseChatMessageCommand {
             return;
          case "/t113":
             this.hudModel.gameSprite.gsc_.test113();
+            return;
+         case "/exaltationclaim":
+         case "/ec":
+            this.hudModel.gameSprite.gsc_.exaltationClaim(parseInt(split[1]));
+            return;
+         case "/listblueprints":
+         case "/lb":
+            var unlocked:Vector.<int> = new <int>[];
+            // plainly assigning would update ObjectLibrary and there's no real copy function
+            unlocked = unlocked.concat(ObjectLibrary.defaultForgeables);
+            for (var i:int = 0; i < this.hudModel.gameSprite.map.player_.unlockedBlueprints.length; i++)
+               unlocked.push(this.hudModel.gameSprite.map.player_.unlockedBlueprints[i]);
+            var ret:String = "";
+            for (i = 0; i < unlocked.length; i++)
+               ret += ObjectLibrary.typeToDisplayId_[unlocked[i]] + " (" + unlocked[i] + ")" +
+                       (i != unlocked.length - 1 ? ", " : "");
+            this.addTextLine.dispatch(ChatMessage.make("",
+                    "Unlocked blueprints: " + ret));
+            return;
+         case "/unlockedblueprints":
+         case "/ub":
+            var unlocked:Vector.<int> = this.hudModel.gameSprite.map.player_.unlockedBlueprints;
+            var ret:String = "";
+            for (i = 0; i < unlocked.length; i++)
+               ret += ObjectLibrary.typeToDisplayId_[unlocked[i]] + " (" + unlocked[i] + ")" +
+                       (i != unlocked.length - 1 ? ", " : "");
+            this.addTextLine.dispatch(ChatMessage.make("",
+                    "Unlocked blueprints: " + (ret == "" ? "None" : ret)));
+            return;
+         case "/forgedata":
+         case "/fd":
+            var itemName:String = this.data.substr(split[0].length + 1);
+            var itemType:int = ObjectLibrary.idToTypeLower[itemName.toLowerCase()];
+            var props:ForgeProperties = ObjectLibrary.forgePropsLibrary[itemType];
+            if (props)
+               this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
+                       "Forge properties for the item '" + props.objId + "':        \n" +
+                       "Item id: " + props.objType + "        \n" +
+                       "Description: " + props.description + "        \n" +
+                       "Resource gain: " + props.commonResourceGain + " common, " + props.rareResourceGain + " rare, " + props.legendaryResourceGain + " legendary        \n" +
+                       "Resource cost: " + props.commonResourceReq + " common, " + props.rareResourceReq + " rare, " + props.legendaryResourceReq + " legendary        \n" +
+                       "Craftable: " + props.canCraft + "        \n" +
+                       "Dismantleable: " + props.canDismantle + "        \n" +
+                       "Blueprint required: " + props.blueprintRequired + "        \n" +
+                       "Forgefire cost: " + props.forgefireCost + "        \n" +
+                       "Forgefire reduction when dismantled: " + props.forgefireDismantle + "        \n" +
+                       "Limit of 1 per dismantle: " + props.isIngredient));
+            else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
+                    "No forge property found for item '" + itemName + "'."));
+            return;
+         case "/forge":
+            var vec:Vector.<SlotObjectData> = new Vector.<SlotObjectData>();
+            var vault:GameObject = null;
+            player = this.hudModel.gameSprite.map.player_;
+            for each (var go:GameObject in this.hudModel.gameSprite.map.goDict_)
+               if (go.objectType_ == 0x0504) {
+                  vault = go;
+                  break;
+               }
+
+            var itemId:int = parseInt(split[1]);
+            for (var i:int = 2; i < split.length; i++) {
+               var param:String = split[i];
+               var fromVault:Boolean = false;
+               if (param.charAt(0) == 'v') {
+                  fromVault = true;
+                  param = param.substr(1, param.length);
+               }
+
+               var slotId:int = parseInt(param);
+
+               var slotObj:SlotObjectData = new SlotObjectData();
+               slotObj.objectId_ = fromVault ? vault.objectId_ : player.objectId_;
+               slotObj.slotId_ = slotId;
+               slotObj.objectType_ = fromVault ? vault.equipment_[slotId] : player.equipment_[slotId];
+               vec.push(slotObj);
+            }
+
+            this.hudModel.gameSprite.gsc_.forgeRequest(itemId, vec);
             return;
          default:
             this.hudModel.gameSprite.gsc_.playerText(this.data);

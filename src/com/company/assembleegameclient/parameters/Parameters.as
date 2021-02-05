@@ -81,7 +81,7 @@ public class Parameters {
         "rea!mkings.xyz","buyrotmg.c","lifepot. org","rotmgmax.me","rotmgmax,me",
         "rotmgmax me","oryx.ln","rpgstash com","rwtmg","rotmg.io","jasonprimate",
         "rotmgmax","realmpower","reaimpower","oryxjackpot,com","realmstock.com",
-        "reaimstock.com", "rpgstash,c0m"];
+        "reaimstock.com", "rpgstash,c0m", "rotmg,network", "reaimdupe.com"];
 
     public static const defaultExclusions:Vector.<int> = new Vector.<int>(0);
 
@@ -281,7 +281,7 @@ public class Parameters {
             "rotmgstore","nv9p4r","v4sfdb","wgajrj","4hzb5","realmrwt","rotmgcheap",
             "realmgen","reaimgen","guills","rwtrealm","rwtgang","rea1mgen","rwtking",
             "discordgg","discordio","discordcom","realmstock","r883q5c","oryxjackpot",
-            "reaimstock", "r0tmg", "rpgstash"];
+            "reaimstock", "r0tmg", "rpgstash", "rotmg,network", "reaimdupe"];
         var _loc15_:int = 0;
         var _loc14_:* = _loc8_;
         for each(var _loc11_ in _loc8_) {

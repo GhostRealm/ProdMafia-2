@@ -77,7 +77,7 @@ package kabam.rotmg.ui.view {
       }
       
       private function onBuyCharacterPending(param1:int) : void {
-         this.view.updateCreditsAndFame(this.playerModel.getCredits(),this.playerModel.getFame());
+         this.view.updateCreditDisplay(this.playerModel.getCredits(),this.playerModel.getFame(), this.playerModel.getForgefire());
       }
       
       private function onClose() : void {

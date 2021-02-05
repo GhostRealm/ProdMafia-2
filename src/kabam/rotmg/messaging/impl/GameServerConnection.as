@@ -115,6 +115,7 @@ public class GameServerConnection {
    public static const TEST113:int = 113;
    public static const EXALTATION_UPDATE:int = 114;
    public static const EXALTATION_CLAIM:int = 115;
+   public static const EXALTATION_CLAIM_RESPONSE:int = 116;
    public static const VAULT_UPDATE:int = 117;
    public static const FORGE_REQUEST:int = 118;
    public static const FORGE_RESPONSE:int = 119;

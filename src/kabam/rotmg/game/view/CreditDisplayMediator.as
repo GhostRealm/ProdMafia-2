@@ -37,7 +37,7 @@ package kabam.rotmg.game.view {
       override public function initialize() : void {
          this.model.creditsChanged.add(this.onCreditsChanged);
          this.model.fameChanged.add(this.onFameChanged);
-         this.model.tokensChanged.add(this.onTokensChanged);
+         this.model.forgefireChanged.add(this.onForgefireChanged);
          this.view.openAccountDialog.add(this.onOpenAccountDialog);
          var _loc1_:Boolean = this.view.gs && this.view.gs.map.name_ == "Nexus";
          if(_loc1_) {
@@ -69,7 +69,7 @@ package kabam.rotmg.game.view {
       override public function destroy() : void {
          this.model.creditsChanged.remove(this.onCreditsChanged);
          this.model.fameChanged.remove(this.onFameChanged);
-         this.model.tokensChanged.remove(this.onTokensChanged);
+         this.model.forgefireChanged.remove(this.onForgefireChanged);
          this.view.openAccountDialog.remove(this.onOpenAccountDialog);
          var _loc1_:Boolean = this.view.gs && this.view.gs.map.name_ == "Nexus";
          if(this.view.fameButton && _loc1_) {
@@ -90,14 +90,14 @@ package kabam.rotmg.game.view {
       }
       
       private function onCreditsChanged(param1:int) : void {
-         this.view.draw(param1,this.model.getFame());
+         this.view.draw(param1,this.model.getFame(), this.model.getForgefire());
       }
       
       private function onFameChanged(param1:int) : void {
-         this.view.draw(this.model.getCredits(),param1);
+         this.view.draw(this.model.getCredits(),param1, this.model.getForgefire());
       }
       
-      private function onTokensChanged(param1:int) : void {
+      private function onForgefireChanged(param1:int) : void {
          this.view.draw(this.model.getCredits(),this.model.getFame(),param1);
       }
       

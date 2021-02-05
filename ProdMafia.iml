@@ -10,7 +10,7 @@
             </entry>
           </entries>
           <sdk name="AIR32" />
-        </dependencies>e
+        </dependencies>
         <compiler-options>
           <map>
             <entry key="compiler.debug.swf" value="false" />

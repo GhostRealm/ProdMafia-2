@@ -1031,14 +1031,14 @@ import kabam.rotmg.messaging.impl.incoming.MapInfo;
                if(this.isSafeMap) {
                   this.rankText_.draw(_loc7_.numStars_,_loc7_.starsBg_);
                   this.guildText_.draw(_loc7_.guildName_,_loc7_.guildRank_);
-                  this.creditDisplay_.draw(_loc7_.credits_,_loc7_.fame_,_loc7_.tokens_);
+                  this.creditDisplay_.draw(_loc7_.credits_,_loc7_.fame_,_loc7_.forgefire);
                } else {
-                  this.creditDisplay_.draw(_loc7_.credits_,_loc7_.fame_,_loc7_.tokens_);
+                  this.creditDisplay_.draw(_loc7_.credits_,_loc7_.fame_,_loc7_.forgefire);
                }
             } else if(this.isSafeMap) {
                this.rankText_.draw(_loc7_.numStars_,_loc7_.starsBg_);
                this.guildText_.draw(_loc7_.guildName_,_loc7_.guildRank_);
-               this.creditDisplay_.draw(_loc7_.credits_,_loc7_.fame_,_loc7_.tokens_);
+               this.creditDisplay_.draw(_loc7_.credits_,_loc7_.fame_,_loc7_.forgefire);
             } else {
                this.creditDisplay_.visible = false;
             }

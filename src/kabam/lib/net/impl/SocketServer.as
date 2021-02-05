@@ -226,11 +226,6 @@ public class SocketServer {
             message = this.messages.require(messageId);
             var bytesStr:String = "";
             var i:int = 0;
-            if (!message) {
-                for (; i < this.messageLen - 5; i++)
-                    bytesStr += this.socket.readByte().toString() + ", ";
-                trace("Unhandled packet, id:", messageId, "data in bytes:", bytesStr)
-            }
             data.position = 0;
             data.length = 0;
             if (this.messageLen - 5 > 0) {
@@ -240,6 +235,12 @@ public class SocketServer {
             if (this.incomingCipher != null) {
                 this.incomingCipher.decrypt(data);
                 data.position = 0;
+            }
+            if (!message) {
+                for (; i < this.messageLen - 5; i++)
+                    bytesStr += data.readByte().toString() + ", ";
+                trace("Unhandled packet, id:", messageId, "data in bytes:", bytesStr);
+                return;
             }
             this.messageLen = -1;
             if (message == null) {

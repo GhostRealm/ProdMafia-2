@@ -41,11 +41,13 @@ package com.company.assembleegameclient.ui.icons {
       
       private var toolTip_:TextToolTip = null;
       
-      public function IconButton(param1:BitmapData, param2:String, param3:String, param4:String = "", param5:int = 0) {
+      public function IconButton(param1:BitmapData, param2:String, param3:String, param4:String = "", param5:int = 0, noRedraw:Boolean = false) {
          hoverTooltipDelegate = new HoverTooltipDelegate();
          super();
          this.origIconBitmapData_ = param1;
-         this.iconBitmapData_ = TextureRedrawer.redraw(this.origIconBitmapData_,320 / this.origIconBitmapData_.width,true,0);
+         this.iconBitmapData_ = this.origIconBitmapData_;
+         if (!noRedraw)
+            this.iconBitmapData_ = TextureRedrawer.redraw(this.origIconBitmapData_,320 / this.origIconBitmapData_.width,true,0);
          this.icon_ = new Bitmap(this.getCroppedBitmapData(this.iconBitmapData_,param5));
          this.icon_.x = -12;
          this.icon_.y = -12;

@@ -46,7 +46,7 @@ package com.company.assembleegameclient.appengine {
       
       public var credits_:int = 0;
       
-      public var tokens_:int = 0;
+      public var forgefire:int = 0;
       
       public var numStars_:int = 0;
       
@@ -268,7 +268,7 @@ package com.company.assembleegameclient.appengine {
          this.bestCharFame_ = param1.Stats.BestCharFame;
          this.fame_ = param1.Stats.Fame;
          this.credits_ = param1.Credits;
-         this.tokens_ = param1.FortuneToken;
+         this.forgefire = param1.ForgeFireEnergy;
          this.nextCharSlotPrice_ = param1.NextCharSlotPrice;
          this.isAgeVerified = this.accountId_ != "" && param1.IsAgeVerified == 1;
          this.hasPlayerDied = true;

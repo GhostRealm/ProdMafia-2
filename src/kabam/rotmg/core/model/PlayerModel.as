@@ -16,7 +16,7 @@ package kabam.rotmg.core.model {
       
       public const fameChanged:Signal = new Signal(int);
       
-      public const tokensChanged:Signal = new Signal(int);
+      public const forgefireChanged:Signal = new Signal(int);
       
       public var lockList:Vector.<String>;
       
@@ -125,6 +125,17 @@ package kabam.rotmg.core.model {
             this.creditsChanged.dispatch(param1);
          }
       }
+
+      public function getForgefire() : int {
+         return this.charList.forgefire;
+      }
+
+      public function setForgefire(amt:int) : void {
+         if (this.charList.forgefire != amt) {
+            this.charList.forgefire = amt;
+            this.forgefireChanged.dispatch(amt);
+         }
+      }
       
       public function getFame() : int {
          return this.charList.fame_;
@@ -134,17 +145,6 @@ package kabam.rotmg.core.model {
          if(this.charList.fame_ != param1) {
             this.charList.fame_ = param1;
             this.fameChanged.dispatch(param1);
-         }
-      }
-      
-      public function getTokens() : int {
-         return this.charList.tokens_;
-      }
-      
-      public function setTokens(param1:int) : void {
-         if(this.charList.tokens_ != param1) {
-            this.charList.tokens_ = param1;
-            this.tokensChanged.dispatch(param1);
          }
       }
       

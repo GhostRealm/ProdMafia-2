@@ -3,7 +3,9 @@ package kabam.rotmg.game.view {
    import com.company.assembleegameclient.util.FameUtil;
    import com.company.assembleegameclient.util.TextureRedrawer;
    import com.company.util.AssetLibrary;
-   import flash.display.Bitmap;
+import com.company.util.BitmapUtil;
+
+import flash.display.Bitmap;
    import flash.display.BitmapData;
    import flash.display.Sprite;
    import flash.events.MouseEvent;
@@ -41,14 +43,20 @@ package kabam.rotmg.game.view {
       private var creditsText_:TextFieldDisplayConcrete;
       
       private var fameText_:TextFieldDisplayConcrete;
+
+      private var forgefireText:TextFieldDisplayConcrete;
       
       private var coinIcon_:Bitmap;
       
       private var fameIcon_:Bitmap;
+
+      private var forgefireIcon:Bitmap;
       
       private var credits_:int = -1;
       
       private var fame_:int = -1;
+
+      private var forgefire:int = -1;
       
       private var displayFame_:Boolean = true;
       
@@ -62,12 +70,22 @@ package kabam.rotmg.game.view {
          super();
          this.displayFame_ = param2;
          this.gs = param1;
+
+         this.forgefireText = this.makeTextField();
+         waiter.push(this.forgefireText.textChanged);
+         addChild(this.forgefireText);
+         var bmpd:BitmapData = BitmapUtil.cropToBitmapData(
+                 AssetLibrary.getImage("fireforge_points"), 4, 4, 8, 8);
+         bmpd = TextureRedrawer.redraw(bmpd,40,true,0);
+         this.forgefireIcon = new Bitmap(bmpd);
+         addChild(this.forgefireIcon);
+
          this.creditsText_ = this.makeTextField();
          waiter.push(this.creditsText_.textChanged);
          addChild(this.creditsText_);
-         var _loc5_:BitmapData = AssetLibrary.getImageFromSet("lofiObj3",225);
-         _loc5_ = TextureRedrawer.redraw(_loc5_,40,true,0);
-         this.coinIcon_ = new Bitmap(_loc5_);
+         bmpd = AssetLibrary.getImageFromSet("lofiObj3",225);
+         bmpd = TextureRedrawer.redraw(bmpd,40,true,0);
+         this.coinIcon_ = new Bitmap(bmpd);
          addChild(this.coinIcon_);
          if(this.displayFame_) {
             this.fameText_ = this.makeTextField();
@@ -113,10 +131,13 @@ package kabam.rotmg.game.view {
          return _loc2_;
       }
       
-      public function draw(param1:int, param2:int, param3:int = 0) : void {
-         if(param1 == this.credits_ && (this.displayFame_ && param2 == this.fame_)) {
+      public function draw(param1:int, param2:int, param3:int) : void {
+         if (param1 == this.credits_
+                 && (this.displayFame_ && param2 == this.fame_)
+                 && param3 == this.forgefire)
             return;
-         }
+         this.forgefire = param3;
+         this.forgefireText.setStringBuilder(new StaticStringBuilder(this.forgefire.toString()));
          this.credits_ = param1;
          this.creditsText_.setStringBuilder(new StaticStringBuilder(this.credits_.toString()));
          if(this.displayFame_) {
@@ -135,7 +156,11 @@ package kabam.rotmg.game.view {
          if(this._creditsButton) {
             this._creditsButton.x = this.coinIcon_.x - this.creditsText_.width - 16;
             this._creditsButton.y = 7;
-         }
+            this.forgefireIcon.x = this._creditsButton.x - 30;
+         } else
+            this.forgefireIcon.x = this.creditsText_.x - 30;
+         this.forgefireText.x = this.forgefireIcon.x - this.forgefireIcon.width + 8;
+         this.forgefireText.y = this.forgefireIcon.y + this.forgefireIcon.height / 2 - this.forgefireText.height / 2;
          if(this.displayFame_) {
             this.fameIcon_.x = this.creditsText_.x - this.fameIcon_.width - this.resourcePadding;
             this.fameText_.x = this.fameIcon_.x - this.fameText_.width + 8;
@@ -143,7 +168,11 @@ package kabam.rotmg.game.view {
             if(this._fameButton) {
                this._fameButton.x = this.fameIcon_.x - this.fameText_.width - 16;
                this._fameButton.y = 7;
-            }
+               this.forgefireIcon.x = this._fameButton.x - 30;
+            } else
+               this.forgefireIcon.x = this.fameText_.x - 30;
+            this.forgefireText.x = this.forgefireIcon.x - this.forgefireIcon.width + 8;
+            this.forgefireText.y = this.forgefireIcon.y + this.forgefireIcon.height / 2 - this.forgefireText.height / 2;
          }
       }
       
