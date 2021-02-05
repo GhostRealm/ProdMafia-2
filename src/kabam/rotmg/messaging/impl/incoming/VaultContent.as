@@ -2,7 +2,7 @@ package kabam.rotmg.messaging.impl.incoming {
    import flash.utils.IDataInput;
    import kabam.rotmg.messaging.impl.data.CompressedInt;
    
-   public class VaultUpdate extends IncomingMessage {
+   public class VaultContent extends IncomingMessage {
        
       
       public var vaultContents:Vector.<int>;
@@ -19,7 +19,7 @@ package kabam.rotmg.messaging.impl.incoming {
       
       public var nextPotionMax:int;
       
-      public function VaultUpdate(param1:uint, param2:Function) {
+      public function VaultContent(param1:uint, param2:Function) {
          this.vaultContents = new Vector.<int>();
          this.giftContents = new Vector.<int>();
          this.potionContents = new Vector.<int>();
@@ -57,7 +57,7 @@ package kabam.rotmg.messaging.impl.incoming {
       }
       
       override public function toString() : String {
-         return formatToString("VAULT_UPDATE","vaultContents","giftContents","potionContents","vaultUpgradeCost","potionUpgradeCost","currentPotionMax","nextPotionMax");
+         return formatToString("VAULT_CONTENT","vaultContents","giftContents","potionContents","vaultUpgradeCost","potionUpgradeCost","currentPotionMax","nextPotionMax");
       }
    }
 }

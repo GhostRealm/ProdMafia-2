@@ -896,6 +896,7 @@ public class Parameters {
         setDefault("logErrors", false);
         setDefault("test113Count", 0);
         setDefault("tutorialMode", false);
+        setDefaultKey("pauseAnywhere", KeyCodes.UNSET);
         Options.calculateIgnoreBitmask();
     }
 

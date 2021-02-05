@@ -112,14 +112,18 @@ public class GameServerConnection {
    public static const NEW_CHARACTER_INFORMATION:int = 108;
    public static const UNLOCK_INFORMATION:int = 109;
    public static const QUEUE_INFORMATION:int = 112;
-   public static const TEST113:int = 113;
-   public static const EXALTATION_UPDATE:int = 114;
-   public static const EXALTATION_CLAIM:int = 115;
-   public static const EXALTATION_CLAIM_RESPONSE:int = 116;
-   public static const VAULT_UPDATE:int = 117;
+   public static const QUEUE_CANCEL:int = 113;
+   public static const EXALTATION_BONUS_CHANGED:int = 114;
+   public static const REDEEM_EXALTATION_REWARD:int = 115;
+   public static const EXALTATION_REDEEM_INFO:int = 116;
+   public static const VAULT_CONTENT:int = 117;
    public static const FORGE_REQUEST:int = 118;
-   public static const FORGE_RESPONSE:int = 119;
-   public static const BLUEPRINT_UPDATE:int = 120;
+   public static const FORGE_RESULT:int = 119;
+   public static const FORGE_UNLOCKED_BLUEPRINTS:int = 120;
+
+   // seems to be unimplemented, only present in Exalt packet id list (on testing)
+   public static const TEST121:int = 121;
+   public static const TEST122:int = 122;
 
    public static const CHAT_HELLO_MSG:int = 206;
    public static const CHAT_TOKEN_MSG:int = 207;
@@ -316,7 +320,7 @@ public class GameServerConnection {
    public function forgeRequest(item:int, offers:Vector.<SlotObjectData>) : void {
    }
 
-   public function test113() : void {
+   public function queueCancel(objId:int) : void {
    }
 }
 }

@@ -14,7 +14,7 @@ package kabam.rotmg.messaging.impl.outgoing {
       
       override public function writeToOutput(param1:IDataOutput) : void {
          param1.writeUTF(this.name_);
-         param1.writeInt(this.guildRank_);
+         param1.writeByte(this.guildRank_);
       }
       
       override public function toString() : String {

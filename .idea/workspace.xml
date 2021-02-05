@@ -5,57 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ad37990-70c7-42ae-b5ef-90ac04853ccc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/exaltation/ExaltationData.as" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationClaimResponse.as" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/QueueCancel.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProdMafia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ProdMafia.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/appengine/SavedCharactersList.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/appengine/SavedCharactersList.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/game/GameSprite.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/game/GameSprite.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/game/MapUserInput.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/game/MapUserInput.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/ObjectLibrary.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/ObjectLibrary.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/ObjectProperties.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/ObjectProperties.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/Player.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/Player.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/Projectile.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/Projectile.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/parameters/Parameters.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/parameters/Parameters.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/screens/CharacterSelectionAndNewsScreen.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/screens/CharacterSelectionAndNewsScreen.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/screens/NewCharacterScreen.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/screens/NewCharacterScreen.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/exaltation/ExaltationMediator.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/exaltation/ExaltationMediator.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/exaltation/ExaltationView.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/exaltation/ExaltationView.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/icons/IconButton.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/icons/IconButton.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/icons/IconButtonFactory.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/icons/IconButtonFactory.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/options/Options.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/options/Options.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/tooltip/EquipmentToolTip.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/tooltip/EquipmentToolTip.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/tooltip/PlayerToolTip.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/tooltip/PlayerToolTip.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/util/AssetLoader.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/util/AssetLoader.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/util/AssetLibrary.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/util/AssetLibrary.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/lib/net/impl/SocketServer.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/lib/net/impl/SocketServer.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/account/core/services/GetCharListTask.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/account/core/services/GetCharListTask.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/account/core/services/GetConCharListTask.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/account/core/services/GetConCharListTask.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/assets/EmbeddedAssets.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/assets/EmbeddedAssets.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_combat.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_combat.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_combat_grey.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_combat_grey.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_exalted.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_exalted.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_heart.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_heart.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_search.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/assets/individual/icon_search.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/chat/control/ParseChatMessageCommand.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/chat/control/ParseChatMessageCommand.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/classes/control/ParseCharListXmlCommand.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/classes/control/ParseCharListXmlCommand.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/classes/view/CharacterSkinView.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/classes/view/CharacterSkinView.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/core/model/PlayerModel.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/core/model/PlayerModel.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/game/view/CreditDisplay.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/game/view/CreditDisplay.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/game/view/CreditDisplayMediator.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/game/view/CreditDisplayMediator.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnection.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnection.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnectionConcrete.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnectionConcrete.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/data/StatData.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/data/StatData.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationUpdate.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeResponse.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeResponse.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ForgeRequest.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ForgeRequest.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/model/HUDModel.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/model/HUDModel.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/CharacterDetailsMediator.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/CharacterDetailsMediator.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/CharacterDetailsView.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/CharacterDetailsView.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/NewCharacterMediator.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/NewCharacterMediator.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/TitleView.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/TitleView.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/components/ScreenBase_TitleScreenBackground.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/components/ScreenBase_TitleScreenBackground.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/deez.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/ui/view/deez.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/BlueprintUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeUnlockedBlueprints.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationClaimResponse.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationRedeemInfo.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationBonusChanged.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeResponse.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeResult.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/VaultUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/VaultContent.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ChangeGuildRank.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ChangeGuildRank.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ExaltationClaim.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/RedeemExaltationReward.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/Test113.as" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/stage3D/Renderer.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/stage3D/Renderer.as" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +55,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.16503906" />
     <property name="project.structure.side.proportion" value="0.49069768" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -231,7 +197,8 @@
       <workItem from="1612355842844" duration="4543000" />
       <workItem from="1612380251062" duration="189000" />
       <workItem from="1612380462584" duration="8396000" />
-      <workItem from="1612453255763" duration="17428000" />
+      <workItem from="1612453255763" duration="28565000" />
+      <workItem from="1612552674471" duration="1213000" />
     </task>
     <servers />
   </component>

@@ -1,7 +1,7 @@
 package kabam.rotmg.messaging.impl.incoming {
    import flash.utils.IDataInput;
    
-   public class ExaltationUpdate extends IncomingMessage {
+   public class ExaltationBonusChanged extends IncomingMessage {
       private var objType:int;
       private var attackProgress:int;
       private var defenseProgress:int;
@@ -12,7 +12,7 @@ package kabam.rotmg.messaging.impl.incoming {
       private var healthProgress:int;
       private var manaProgress:int;
       
-      public function ExaltationUpdate(id:uint, callback:Function) {
+      public function ExaltationBonusChanged(id:uint, callback:Function) {
          super(id, callback);
       }
       
@@ -29,7 +29,7 @@ package kabam.rotmg.messaging.impl.incoming {
       }
       
       override public function toString() : String {
-         return formatToString("EXALTATION_UPDATE", "objType",
+         return formatToString("EXALTATION_BONUS_CHANGED", "objType",
                  "attackProgress", "defenseProgress", "speedProgress",
                  "dexterityProgress", "vitalityProgress", "wisdomProgress",
                  "healthProgress", "manaProgress");

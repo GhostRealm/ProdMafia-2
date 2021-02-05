@@ -4,6 +4,7 @@ import com.company.assembleegameclient.objects.ObjectLibrary;
 import com.company.assembleegameclient.objects.Player;
 import com.company.assembleegameclient.parameters.Parameters;
 import com.company.assembleegameclient.ui.options.Options;
+import com.company.assembleegameclient.util.ConditionEffect;
 import com.company.assembleegameclient.util.TimeUtil;
 import com.company.util.PointUtil;
 
@@ -459,13 +460,13 @@ public class MapUserInput {
    private function onEnterFrame(param1:Event) : void {
       var _loc2_:Number = NaN;
       var _loc3_:Player = this.gs.map.player_;
-      if(_loc3_) {
+      if (_loc3_) {
          _loc3_.mousePos_.x = this.gs.map.mouseX;
          _loc3_.mousePos_.y = this.gs.map.mouseY;
-         if(this.enablePlayerInput_) {
-            if(this.mouseDown_) {
-               if(!_loc3_.isUnstable) {
-                  _loc2_ = Math.atan2(this.gs.map.mouseY,this.gs.map.mouseX);
+         if (this.enablePlayerInput_) {
+            if (this.mouseDown_) {
+               if (!_loc3_.isUnstable) {
+                  _loc2_ = Math.atan2(this.gs.map.mouseY, this.gs.map.mouseX);
                   _loc3_.attemptAttackAngle(_loc2_);
                   _loc3_.attemptAutoAbility(_loc2_);
                } else {
@@ -473,9 +474,9 @@ public class MapUserInput {
                   _loc3_.attemptAttackAngle(_loc2_);
                   _loc3_.attemptAutoAbility(_loc2_);
                }
-            } else if(Parameters.data.AAOn || this.autofire_ || Parameters.data.AutoAbilityOn) {
-               if(!_loc3_.isUnstable) {
-                  _loc2_ = Math.atan2(this.gs.map.mouseY,this.gs.map.mouseX);
+            } else if (Parameters.data.AAOn || this.autofire_ || Parameters.data.AutoAbilityOn) {
+               if (!_loc3_.isUnstable) {
+                  _loc2_ = Math.atan2(this.gs.map.mouseY, this.gs.map.mouseX);
                   _loc3_.attemptAutoAim(_loc2_);
                } else {
                   _loc3_.attemptAutoAim(Math.random() * 6.28318530717959);
@@ -524,33 +525,55 @@ public class MapUserInput {
          case Parameters.data.walkKey:
             this.isWalking = true;
             return;
-         /*case KeyCodes.PAGE_DOWN:
-            var vault:GameObject = null;
-            for each (var go:GameObject in gs.map.goDict_)
-               if (go.objectType_ == 0x504) {
-                  vault = go;
-                  break;
+         case Parameters.data.pauseAnywhere:
+            var pauseState:Boolean = this.gs.map.player_.isPaused_();
+            if (pauseState)
+               this.gs.gsc_.setCondition(ConditionEffect.PAUSED, 0);
+            else {
+               var isSafe:Boolean = true;
+               for each (var go:GameObject in this.gs.map.goDict_)
+                  if (go.props_.isEnemy_ &&
+                          PointUtil.distanceSquaredXY(go.x_, go.y_, player.x_, player.y_) <= 9 * 9) {
+                     isSafe = false;
+                     break;
+                  }
+
+               if (isSafe)
+                  this.gs.gsc_.setCondition(ConditionEffect.PAUSED, int.MAX_VALUE);
+               else {
+                  player.levelUpEffect("Not safe to pause!");
+                  return;
                }
+            }
+            player.levelUpEffect(pauseState ? "Pause: OFF" : "Pause: ON");
+            return;
+              /*case KeyCodes.PAGE_DOWN:
+                 var vault:GameObject = null;
+                 for each (var go:GameObject in gs.map.goDict_)
+                    if (go.objectType_ == 0x504) {
+                       vault = go;
+                       break;
+                    }
 
-            var empty:Vector.<int> = new Vector.<int>();
+                 var empty:Vector.<int> = new Vector.<int>();
 
-            for (var i:int = 4; i < player.equipment_.length; i++)
-               if (player.equipment_[i] == -1)
-                  empty.push(i);
+                 for (var i:int = 4; i < player.equipment_.length; i++)
+                    if (player.equipment_[i] == -1)
+                       empty.push(i);
 
-            for (i = 0; i < Math.min(empty.length, vault.equipment_.length); i++)
-               gs.gsc_.invSwap(gs.map.player_,
-                       vault,
-                       i,
-                       vault.equipment_[i],
-                       gs.map.player_,
-                       empty[i],
-                       -1,
-                       i * 550);
+                 for (i = 0; i < Math.min(empty.length, vault.equipment_.length); i++)
+                    gs.gsc_.invSwap(gs.map.player_,
+                            vault,
+                            i,
+                            vault.equipment_[i],
+                            gs.map.player_,
+                            empty[i],
+                            -1,
+                            i * 550);
 
-            if (Parameters.lastRecon)
-               gs.dispatchEvent(Parameters.lastRecon);
-            return;*/
+                 if (Parameters.lastRecon)
+                    gs.dispatchEvent(Parameters.lastRecon);
+                 return;*/
          case Parameters.data.depositKey:
             var vault:GameObject = null;
             for each (var go:GameObject in gs.map.goDict_)

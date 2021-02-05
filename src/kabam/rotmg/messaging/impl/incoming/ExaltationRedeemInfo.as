@@ -2,8 +2,8 @@ package kabam.rotmg.messaging.impl.incoming {
 
 import flash.utils.IDataInput;
 
-public class ExaltationClaimResponse extends IncomingMessage {
-    public function ExaltationClaimResponse(id:uint, callback:Function) {
+public class ExaltationRedeemInfo extends IncomingMessage {
+    public function ExaltationRedeemInfo(id:uint, callback:Function) {
         super(id, callback);
     }
 
@@ -13,7 +13,7 @@ public class ExaltationClaimResponse extends IncomingMessage {
     }
 
     override public function toString() : String {
-        return formatToString("EXALTATION_CLAIM_RESPONSE");
+        return formatToString("EXALTATION_REDEEM_INFO");
     }
 }
 }

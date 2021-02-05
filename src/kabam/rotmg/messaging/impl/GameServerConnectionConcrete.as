@@ -139,11 +139,11 @@ import kabam.rotmg.messaging.impl.incoming.Death;
 import kabam.rotmg.messaging.impl.incoming.EnemyShoot;
 import kabam.rotmg.messaging.impl.incoming.EvolvedMessageHandler;
 import kabam.rotmg.messaging.impl.incoming.EvolvedPetMessage;
-import kabam.rotmg.messaging.impl.incoming.ExaltationClaimResponse;
-import kabam.rotmg.messaging.impl.incoming.ExaltationUpdate;
+import kabam.rotmg.messaging.impl.incoming.ExaltationRedeemInfo;
+import kabam.rotmg.messaging.impl.incoming.ExaltationBonusChanged;
 import kabam.rotmg.messaging.impl.incoming.Failure;
 import kabam.rotmg.messaging.impl.incoming.File;
-import kabam.rotmg.messaging.impl.incoming.ForgeResponse;
+import kabam.rotmg.messaging.impl.incoming.ForgeResult;
 import kabam.rotmg.messaging.impl.incoming.GlobalNotification;
 import kabam.rotmg.messaging.impl.incoming.Goto;
 import kabam.rotmg.messaging.impl.incoming.GuildResult;
@@ -174,10 +174,10 @@ import kabam.rotmg.messaging.impl.incoming.TradeChanged;
 import kabam.rotmg.messaging.impl.incoming.TradeDone;
 import kabam.rotmg.messaging.impl.incoming.TradeRequested;
 import kabam.rotmg.messaging.impl.incoming.TradeStart;
-import kabam.rotmg.messaging.impl.incoming.BlueprintUpdate;
+import kabam.rotmg.messaging.impl.incoming.ForgeUnlockedBlueprints;
 import kabam.rotmg.messaging.impl.incoming.UnlockInformation;
 import kabam.rotmg.messaging.impl.incoming.Update;
-import kabam.rotmg.messaging.impl.incoming.VaultUpdate;
+import kabam.rotmg.messaging.impl.incoming.VaultContent;
 import kabam.rotmg.messaging.impl.incoming.VerifyEmail;
 import kabam.rotmg.messaging.impl.incoming.arena.ArenaDeath;
 import kabam.rotmg.messaging.impl.incoming.arena.ImminentArenaWave;
@@ -199,7 +199,7 @@ import kabam.rotmg.messaging.impl.outgoing.CreateGuild;
 import kabam.rotmg.messaging.impl.outgoing.EditAccountList;
 import kabam.rotmg.messaging.impl.outgoing.EnemyHit;
 import kabam.rotmg.messaging.impl.outgoing.Escape;
-import kabam.rotmg.messaging.impl.outgoing.ExaltationClaim;
+import kabam.rotmg.messaging.impl.outgoing.RedeemExaltationReward;
 import kabam.rotmg.messaging.impl.outgoing.ForgeRequest;
 import kabam.rotmg.messaging.impl.outgoing.GoToQuestRoom;
 import kabam.rotmg.messaging.impl.outgoing.GotoAck;
@@ -226,7 +226,7 @@ import kabam.rotmg.messaging.impl.outgoing.SetCondition;
 import kabam.rotmg.messaging.impl.outgoing.ShootAck;
 import kabam.rotmg.messaging.impl.outgoing.SquareHit;
 import kabam.rotmg.messaging.impl.outgoing.Teleport;
-import kabam.rotmg.messaging.impl.outgoing.Test113;
+import kabam.rotmg.messaging.impl.outgoing.QueueCancel;
 import kabam.rotmg.messaging.impl.outgoing.UseItem;
 import kabam.rotmg.messaging.impl.outgoing.UsePortal;
 import kabam.rotmg.messaging.impl.outgoing.arena.EnterArena;
@@ -776,13 +776,14 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       serverConnection.sendMessage(_loc3_);
    }
 
-   override public function test113() : void {
-      var pkt:Test113 = this.messages.require(TEST113) as Test113;
+   override public function queueCancel(objId:int) : void {
+      var pkt:QueueCancel = this.messages.require(QUEUE_CANCEL) as QueueCancel;
+      pkt.objectId = objId;
       serverConnection.sendMessage(pkt);
    }
 
    override public function exaltationClaim(item:int) : void {
-      var pkt:ExaltationClaim = this.messages.require(EXALTATION_CLAIM) as ExaltationClaim;
+      var pkt:RedeemExaltationReward = this.messages.require(REDEEM_EXALTATION_REWARD) as RedeemExaltationReward;
       pkt.item = item;
       serverConnection.sendMessage(pkt);
    }
@@ -911,14 +912,14 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.map(53).toMessage(ReskinPet);
       map.map(3).toMessage(ClaimDailyRewardMessage);
       map.map(33).toMessage(ChangePetSkin);
-      map.map(EXALTATION_CLAIM).toMessage(ExaltationClaim);
+      map.map(REDEEM_EXALTATION_REWARD).toMessage(RedeemExaltationReward);
       map.map(FORGE_REQUEST).toMessage(ForgeRequest);
-      map.map(TEST113).toMessage(Test113);
-      map.map(EXALTATION_CLAIM_RESPONSE).toMessage(ExaltationClaimResponse);
-      map.map(FORGE_RESPONSE).toMessage(ForgeResponse);
-      map.map(EXALTATION_UPDATE).toMessage(ExaltationUpdate).toMethod(this.onExaltationUpdate);
-      map.map(BLUEPRINT_UPDATE).toMessage(BlueprintUpdate).toMethod(this.onBlueprintUpdate);
-      map.map(VAULT_UPDATE).toMessage(VaultUpdate).toMethod(this.onVaultUpdate);
+      map.map(QUEUE_CANCEL).toMessage(QueueCancel);
+      map.map(EXALTATION_REDEEM_INFO).toMessage(ExaltationRedeemInfo);
+      map.map(FORGE_RESULT).toMessage(ForgeResult);
+      map.map(EXALTATION_BONUS_CHANGED).toMessage(ExaltationBonusChanged).toMethod(this.onExaltationBonusChanged);
+      map.map(FORGE_UNLOCKED_BLUEPRINTS).toMessage(ForgeUnlockedBlueprints).toMethod(this.onForgeUnlockedBlueprints);
+      map.map(VAULT_CONTENT).toMessage(VaultContent).toMethod(this.onVaultContent);
       map.map(0).toMessage(Failure).toMethod(this.onFailure);
       map.map(101).toMessage(CreateSuccess).toMethod(this.onCreateSuccess);
       map.map(12).toMessage(ServerPlayerShoot).toMethod(this.onServerPlayerShoot);
@@ -1213,14 +1214,14 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.unmap(77);
       map.unmap(38);
       map.unmap(84);
-      map.unmap(EXALTATION_UPDATE);
-      map.unmap(EXALTATION_CLAIM);
-      map.unmap(EXALTATION_CLAIM_RESPONSE);
-      map.unmap(VAULT_UPDATE);
+      map.unmap(EXALTATION_BONUS_CHANGED);
+      map.unmap(REDEEM_EXALTATION_REWARD);
+      map.unmap(EXALTATION_REDEEM_INFO);
+      map.unmap(VAULT_CONTENT);
       map.unmap(FORGE_REQUEST);
-      map.unmap(FORGE_RESPONSE);
-      map.unmap(BLUEPRINT_UPDATE);
-      map.unmap(TEST113);
+      map.unmap(FORGE_RESULT);
+      map.unmap(FORGE_UNLOCKED_BLUEPRINTS);
+      map.unmap(QUEUE_CANCEL);
    }
 
    private function encryptConnection() : void {
@@ -2914,15 +2915,15 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       this.addTextLine.dispatch(ChatMessage.make("*Error*",param1));
    }
 
-   private function onVaultUpdate(pkt:VaultUpdate) : void {
+   private function onVaultContent(pkt:VaultContent) : void {
       var vaultUpdate:VaultUpdateSignal = this.injector.getInstance(VaultUpdateSignal);
       vaultUpdate.dispatch(pkt.vaultContents, pkt.giftContents, pkt.potionContents);
    }
 
-   private function onExaltationUpdate(pkt:ExaltationUpdate) : void {
+   private function onExaltationBonusChanged(pkt:ExaltationBonusChanged) : void {
    }
 
-   private function onBlueprintUpdate(pkt:BlueprintUpdate) : void {
+   private function onForgeUnlockedBlueprints(pkt:ForgeUnlockedBlueprints) : void {
       this.player.unlockedBlueprints = pkt.unlockedItems;
    }
 

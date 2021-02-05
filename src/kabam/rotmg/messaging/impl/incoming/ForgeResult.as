@@ -3,11 +3,11 @@ import flash.utils.IDataInput;
 
 import kabam.rotmg.messaging.impl.data.SlotObjectData;
 
-public class ForgeResponse extends IncomingMessage {
+public class ForgeResult extends IncomingMessage {
     public var success:Boolean;
     public var results:Vector.<SlotObjectData>;
 
-    public function ForgeResponse(id:uint, callback:Function) {
+    public function ForgeResult(id:uint, callback:Function) {
         this.results = new Vector.<SlotObjectData>();
         super(id, callback);
     }
@@ -21,7 +21,7 @@ public class ForgeResponse extends IncomingMessage {
     }
 
     override public function toString() : String {
-        return formatToString("FORGE_RESPONSE", "success", "results");
+        return formatToString("FORGE_RESULT", "success", "results");
     }
 }
 }

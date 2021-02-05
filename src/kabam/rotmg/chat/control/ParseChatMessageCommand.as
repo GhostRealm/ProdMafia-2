@@ -6,6 +6,7 @@ import com.company.assembleegameclient.objects.ObjectLibrary;
 import com.company.assembleegameclient.objects.Player;
 import com.company.assembleegameclient.parameters.Parameters;
 import com.company.assembleegameclient.ui.Slot;
+import com.company.assembleegameclient.util.ConditionEffect;
 import com.company.assembleegameclient.util.TimeUtil;
 import com.company.util.StringUtils;
 import flash.events.Event;
@@ -469,9 +470,6 @@ public class ParseChatMessageCommand {
             this.hudModel.gameSprite.gsc_.changeGuildRank(this.hudModel.gameSprite.map.player_.name_, rank);
             this.addTextLine.dispatch(Parameters.HELP_CHAT_NAME,
                     "Your guild rank has been set to: " + rank);
-            return;
-         case "/t113":
-            this.hudModel.gameSprite.gsc_.test113();
             return;
          case "/exaltationclaim":
          case "/ec":

@@ -3,10 +3,10 @@ import flash.utils.IDataOutput;
 
 import kabam.rotmg.messaging.impl.data.SlotObjectData;
 
-public class ExaltationClaim extends OutgoingMessage {
+public class RedeemExaltationReward extends OutgoingMessage {
    public var item:int;
 
-   public function ExaltationClaim(id:uint, callback:Function) {
+   public function RedeemExaltationReward(id:uint, callback:Function) {
       super(id, callback);
    }
 
@@ -15,7 +15,7 @@ public class ExaltationClaim extends OutgoingMessage {
    }
 
    override public function toString() : String {
-      return formatToString("EXALTATION_CLAIM", "item");
+      return formatToString("REDEEM_EXALTATION_REWARD", "item");
    }
 }
 }

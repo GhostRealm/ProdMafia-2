@@ -4,7 +4,9 @@ package kabam.rotmg.stage3D {
    import com.company.assembleegameclient.parameters.Parameters;
    import flash.display.GraphicsBitmapFill;
    import flash.display3D.Context3D;
-   import flash.display3D.IndexBuffer3D;
+import flash.display3D.Context3DProgramType;
+import flash.display3D.Context3DVertexBufferFormat;
+import flash.display3D.IndexBuffer3D;
    import flash.display3D.Program3D;
    import flash.display3D.VertexBuffer3D;
    import flash.display3D.textures.Texture;
@@ -156,42 +158,41 @@ package kabam.rotmg.stage3D {
          this.context3D.GetContext3D().setRenderToTexture(this.sceneTexture,true);
          this.renderScene(param1);
          this.context3D.GetContext3D().setRenderToBackBuffer();
-         var _loc3_:* = int(param2) - 1;
-         switch(_loc3_) {
-            case 3:
+         switch(param2) {
+            case STAGE3D_FILTER_PAUSE:
+            case STAGE3D_FILTER_BLIND:
                this.context3D.GetContext3D().setProgram(this.postProcessingProgram);
-               this.context3D.GetContext3D().setTextureAt(0,this.sceneTexture);
-               this.context3D.GetContext3D().clear();
-               this.context3D.GetContext3D().setVertexBufferAt(0,this.postFilterVertexBuffer,0,"float2");
-               this.context3D.GetContext3D().setVertexBufferAt(1,null);
+               this.context3D.GetContext3D().setTextureAt(0, this.sceneTexture);
+               this.context3D.GetContext3D().clear(0.5, 0.5, 0.5);
+               this.context3D.GetContext3D().setVertexBufferAt(0, this.postFilterVertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_2);
+               this.context3D.GetContext3D().setVertexBufferAt(1, null);
                break;
-            case 1:
+            case STAGE3D_FILTER_DRUNK:
                this.context3D.GetContext3D().setProgram(this.blurPostProcessing);
-               this.context3D.GetContext3D().setTextureAt(0,this.sceneTexture);
-               this.context3D.GetContext3D().clear();
-               this.context3D.GetContext3D().setVertexBufferAt(0,this.postFilterVertexBuffer,0,"float2");
-               this.context3D.GetContext3D().setVertexBufferAt(1,this.postFilterVertexBuffer,2,"float2");
+               this.context3D.GetContext3D().setTextureAt(0, this.sceneTexture);
+               this.context3D.GetContext3D().clear(0.5, 0.5, 0.5);
+               this.context3D.GetContext3D().setVertexBufferAt(0, this.postFilterVertexBuffer, 0, Context3DVertexBufferFormat.FLOAT_2);
+               this.context3D.GetContext3D().setVertexBufferAt(1, this.postFilterVertexBuffer, 2, Context3DVertexBufferFormat.FLOAT_2);
                break;
-            case 2:
          }
          this.context3D.GetContext3D().setVertexBufferAt(2,null);
-         _loc3_ = int(param2) - 1;
-         switch(_loc3_) {
-            case 3:
-               this.context3D.setProgramConstantsFromVector("vertex",0,POST_FILTER_VERTEX_CONSTANTS);
-               this.context3D.setProgramConstantsFromVector("fragment",0,GRAYSCALE_FRAGMENT_CONSTANTS);
+         switch(param2) {
+            case STAGE3D_FILTER_PAUSE:
+               this.context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 0, POST_FILTER_VERTEX_CONSTANTS);
+               this.context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, GRAYSCALE_FRAGMENT_CONSTANTS);
                break;
-            case 1:
-               this.context3D.setProgramConstantsFromVector("vertex",0,POST_FILTER_VERTEX_CONSTANTS);
-               this.context3D.setProgramConstantsFromVector("fragment",0,BLIND_FRAGMENT_CONSTANTS);
+            case STAGE3D_FILTER_BLIND:
+               this.context3D.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 0, POST_FILTER_VERTEX_CONSTANTS);
+               this.context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, BLIND_FRAGMENT_CONSTANTS);
                break;
-            case 2:
-               if(this.blurFragmentConstants[3] <= 0.2 || this.blurFragmentConstants[3] >= 1.8) {
-                  this.blurFactor = this.blurFactor * -1;
+            case STAGE3D_FILTER_DRUNK:
+               if ((((this.blurFragmentConstants[3] <= 0.2)) || ((this.blurFragmentConstants[3] >= 1.8)))) {
+                  this.blurFactor = (this.blurFactor * -1);
                }
-               this.blurFragmentConstants[3] = this.blurFragmentConstants[3] + this.blurFactor;
-               this.context3D.setProgramConstantsFromMatrix("vertex",0,new Matrix3D());
-               this.context3D.setProgramConstantsFromVector("fragment",0,this.blurFragmentConstants,this.blurFragmentConstants.length / 4);
+               this.blurFragmentConstants[3] = (this.blurFragmentConstants[3] + this.blurFactor);
+               this.context3D.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, new Matrix3D());
+               this.context3D.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, this.blurFragmentConstants, (this.blurFragmentConstants.length / 4));
+               break;
          }
          this.context3D.GetContext3D().clear(0,0,0,1);
          this.context3D.GetContext3D().drawTriangles(this.postFilterIndexBuffer);
