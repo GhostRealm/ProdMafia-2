@@ -120,10 +120,8 @@ public class GameServerConnection {
    public static const FORGE_REQUEST:int = 118;
    public static const FORGE_RESULT:int = 119;
    public static const FORGE_UNLOCKED_BLUEPRINTS:int = 120;
-
-   // seems to be unimplemented, only present in Exalt packet id list (on testing)
-   public static const TEST121:int = 121;
-   public static const TEST122:int = 122;
+   public static const UNLOCK_NEW_SLOT:int = 121;
+   public static const CHANGE_ALLY_SHOOT:int = 122;
 
    public static const CHAT_HELLO_MSG:int = 206;
    public static const CHAT_TOKEN_MSG:int = 207;
@@ -321,6 +319,9 @@ public class GameServerConnection {
    }
 
    public function queueCancel(objId:int) : void {
+   }
+
+   public function changeAllyShoot(toggle:int) : void {
    }
 }
 }

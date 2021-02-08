@@ -25,6 +25,8 @@ package com.company.assembleegameclient.objects {
       public static const propsLibrary_:Dictionary = new Dictionary();
       
       public static const xmlLibrary_:Dictionary = new Dictionary();
+
+      public static const objectXMLLibrary:Dictionary = new Dictionary();
       
       public static const setLibrary_:Dictionary = new Dictionary();
       

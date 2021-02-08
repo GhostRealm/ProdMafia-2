@@ -6,6 +6,7 @@ import com.company.assembleegameclient.parameters.Parameters;
 import com.company.assembleegameclient.ui.options.Options;
 import com.company.assembleegameclient.util.ConditionEffect;
 import com.company.assembleegameclient.util.TimeUtil;
+import com.company.util.KeyCodes;
 import com.company.util.PointUtil;
 
 import flash.display.Stage;
@@ -520,7 +521,7 @@ public class MapUserInput {
             }
             Parameters.data.noClip = !Parameters.data.noClip;
             Parameters.save();
-            player.levelUpEffect(!!Parameters.data.noClip?"No Clip: ON":"No Clip: OFF");
+            player.levelUpEffect(Parameters.data.noClip ? "No Clip: ON" : "No Clip: OFF");
             return;
          case Parameters.data.walkKey:
             this.isWalking = true;
@@ -545,39 +546,40 @@ public class MapUserInput {
                   return;
                }
             }
+
             player.levelUpEffect(pauseState ? "Pause: OFF" : "Pause: ON");
             return;
-              /*case KeyCodes.PAGE_DOWN:
-                 var vault:GameObject = null;
-                 for each (var go:GameObject in gs.map.goDict_)
-                    if (go.objectType_ == 0x504) {
-                       vault = go;
-                       break;
-                    }
+         /*case KeyCodes.PAGE_DOWN:
+            var vault:GameObject = null;
+            for each (var go:GameObject in gs.map.goDict_)
+               if (go.objectType_ == 0x0504) {
+                  vault = go;
+                  break;
+               }
 
-                 var empty:Vector.<int> = new Vector.<int>();
+            var empty:Vector.<int> = new Vector.<int>();
 
-                 for (var i:int = 4; i < player.equipment_.length; i++)
-                    if (player.equipment_[i] == -1)
-                       empty.push(i);
+            for (var i:int = 4; i < player.equipment_.length; i++)
+               if (player.equipment_[i] == -1)
+                  empty.push(i);
 
-                 for (i = 0; i < Math.min(empty.length, vault.equipment_.length); i++)
-                    gs.gsc_.invSwap(gs.map.player_,
-                            vault,
-                            i,
-                            vault.equipment_[i],
-                            gs.map.player_,
-                            empty[i],
-                            -1,
-                            i * 550);
+            for (i = 0; i < Math.min(empty.length, vault.equipment_.length); i++)
+               gs.gsc_.invSwap(gs.map.player_,
+                       vault,
+                       i,
+                       vault.equipment_[i],
+                       gs.map.player_,
+                       empty[i],
+                       -1,
+                       i * 550);
 
-                 if (Parameters.lastRecon)
-                    gs.dispatchEvent(Parameters.lastRecon);
-                 return;*/
+            if (Parameters.lastRecon)
+               gs.dispatchEvent(Parameters.lastRecon);
+            return;*/
          case Parameters.data.depositKey:
             var vault:GameObject = null;
             for each (var go:GameObject in gs.map.goDict_)
-               if (go.objectType_ == 0x504/*0x743*/) {
+               if (go.objectType_ == 0x0504) {
                   vault = go;
                   break;
                }
@@ -609,16 +611,24 @@ public class MapUserInput {
             if (Parameters.lastRecon)
                gs.dispatchEvent(Parameters.lastRecon);
             return;
+         case Parameters.data.moveUp:
+            this.moveUp_ = true;
+            this.setPlayerMovement();
+            return;
+         case Parameters.data.moveDown:
+            this.moveDown_ = true;
+            this.setPlayerMovement();
+            return;
+         case Parameters.data.moveLeft:
+            this.moveLeft_ = true;
+            this.setPlayerMovement();
+            return;
+         case Parameters.data.moveRight:
+            this.moveRight_ = true;
+            this.setPlayerMovement();
+            return;
          default:
-            if(_loc16_ == Parameters.data.moveUp) {
-               this.moveUp_ = true;
-            } else if(_loc16_ == Parameters.data.moveDown) {
-               this.moveDown_ = true;
-            } else if(_loc16_ == Parameters.data.moveLeft) {
-               this.moveLeft_ = true;
-            } else if(_loc16_ == Parameters.data.moveRight) {
-               this.moveRight_ = true;
-            } else if(_loc16_ == Parameters.data.rotateLeft) {
+            if(_loc16_ == Parameters.data.rotateLeft) {
                if(Parameters.data.allowRotation) {
                   this.rotateLeft_ = true;
                }
@@ -720,6 +730,7 @@ public class MapUserInput {
                Parameters.data.HPBar = Parameters.data.HPBar != 0?0:1;
             } else if(_loc16_ == Parameters.data.toggleProjectiles) {
                Parameters.data.disableAllyShoot = Parameters.data.disableAllyShoot != 0?0:1;
+               this.gs.gsc_.changeAllyShoot(Parameters.data.disableAllyShoot);
             } else if(_loc16_ == Parameters.data.miniMapZoomOut) {
                this.miniMapZoom.dispatch("OUT");
             } else if(_loc16_ == Parameters.data.miniMapZoomIn) {

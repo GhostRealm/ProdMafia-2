@@ -48,16 +48,10 @@ public class CharactersMetricsTracker {
 
         var bytes:int = data.bytesAvailable;
         while (data.bytesAvailable > bytes - 20)
-            trace("trail", data.readByte());
+            trace("trail", data.readUnsignedByte());
         while (data.bytesAvailable > 0)
             trace("stats", CompressedInt.read(data));
-        //trace("test", CompressedInt.read(param2))
-        /*while(param2.bytesAvailable >= 5) {
-           _loc4_ = CompressedInt.read(param2);
-           _loc3_ = CompressedInt.read(param2);
-           trace("stats", _loc4_, _loc3_)
-           this.charactersStats[param1].setStat(_loc4_,_loc3_);
-        }*/
+
         this._lastUpdate = new Date();
     }
 

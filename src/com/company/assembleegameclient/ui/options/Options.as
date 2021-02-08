@@ -269,6 +269,10 @@ package com.company.assembleegameclient.ui.options {
          StatusBar.barTextSignal.dispatch(Parameters.data.toggleBarText);
          StatView.toMaxTextSignal.dispatch(Parameters.data.toggleToMaxText);
       }
+
+      private function onDisableAllyShoot() : void {
+         this.gs_.gsc_.changeAllyShoot(Parameters.data.disableAllyShoot);
+      }
       
       private static function makeDegreeOptions() : Vector.<StringBuilder> {
          return new <StringBuilder>[new StaticStringBuilder("45°"),new StaticStringBuilder("0°")];
@@ -292,7 +296,7 @@ package com.company.assembleegameclient.ui.options {
       }
       
       private static function makeAllyShootLabels() : Vector.<StringBuilder> {
-         return new <StringBuilder>[new StaticStringBuilder("Off"),new StaticStringBuilder("All"),new StaticStringBuilder("Proj")];
+         return new <StringBuilder>[new StaticStringBuilder("All"),new StaticStringBuilder("Off")];
       }
       
       private static function makeHpBarLabels() : Vector.<StringBuilder> {
@@ -849,7 +853,7 @@ package com.company.assembleegameclient.ui.options {
       
       private function addExperimentalOptions() : void {
          this.addOptionAndPosition(new ChoiceOption("disableEnemyParticles",makeOnOffLabels(),[true,false],"Disable Enemy Particles","Disable enemy hit and death particles.",null));
-         this.addOptionAndPosition(new ChoiceOption("disableAllyShoot",makeAllyShootLabels(),[0,1,2],"Disable Ally Shoot","Disable showing shooting animations and projectiles shot by allies or only projectiles.",null));
+         this.addOptionAndPosition(new ChoiceOption("disableAllyShoot",makeAllyShootLabels(),[0,1],"Disable Ally Shoot","Disable showing shooting animations and projectiles shot by allies or only projectiles.", this.onDisableAllyShoot));
          this.addOptionAndPosition(new ChoiceOption("disablePlayersHitParticles",makeOnOffLabels(),[true,false],"Disable Players Hit Particles","Disable player and ally hit particles.",null));
          this.addOptionAndPosition(new ChoiceOption("toggleToMaxText",makeOnOffLabels(),[true,false],"Options.ToggleToMaxText","Options.ToggleToMaxTextDesc",onToMaxTextToggle));
          this.addOptionAndPosition(new ChoiceOption("newMiniMapColors",makeOnOffLabels(),[true,false],"Options.ToggleNewMiniMapColorsText","Options.ToggleNewMiniMapColorsTextDesc",null));

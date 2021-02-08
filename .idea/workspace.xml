@@ -5,23 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1ad37990-70c7-42ae-b5ef-90ac04853ccc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/QueueCancel.as" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/UnlockNewSlot.as" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ChangeAllyShoot.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/game/MapUserInput.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/game/MapUserInput.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/ObjectLibrary.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/objects/ObjectLibrary.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/parameters/Parameters.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/parameters/Parameters.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/options/Options.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/assembleegameclient/ui/options/Options.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/chat/control/ParseChatMessageCommand.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/chat/control/ParseChatMessageCommand.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/io/decagames/rotmg/characterMetrics/tracker/CharactersMetricsTracker.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/io/decagames/rotmg/characterMetrics/tracker/CharactersMetricsTracker.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnection.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnection.as" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnectionConcrete.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/GameServerConnectionConcrete.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/BlueprintUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeUnlockedBlueprints.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationClaimResponse.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationRedeemInfo.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ExaltationBonusChanged.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeResponse.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/ForgeResult.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/VaultUpdate.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/VaultContent.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ChangeGuildRank.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ChangeGuildRank.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/ExaltationClaim.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/RedeemExaltationReward.as" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/outgoing/Test113.as" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/stage3D/Renderer.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/stage3D/Renderer.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/data/ObjectData.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/data/ObjectData.as" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/Update.as" beforeDir="false" afterPath="$PROJECT_DIR$/src/kabam/rotmg/messaging/impl/incoming/Update.as" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,9 +60,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\fltr\Documents\GitHub\ProdMafia\src\kabam\rotmg\messaging\impl\incoming" />
+      <recent name="C:\Users\fltr\Documents\GitHub\ProdMafia\src\kabam\rotmg\messaging\impl\outgoing" />
       <recent name="C:\Users\fltr\Documents\GitHub\ProdMafia\src\com\company\assembleegameclient\objects" />
       <recent name="C:\Users\fltr\Documents\GitHub\ProdMafia\src\kabam\rotmg\assets\individual" />
-      <recent name="C:\Users\fltr\Documents\GitHub\ProdMafia\src\kabam\rotmg\messaging\impl\outgoing" />
       <recent name="C:\Users\fltr\Downloads\ProdMafia\src\com\company\assembleegameclient\ui\forge" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -198,7 +193,13 @@
       <workItem from="1612380251062" duration="189000" />
       <workItem from="1612380462584" duration="8396000" />
       <workItem from="1612453255763" duration="28565000" />
-      <workItem from="1612552674471" duration="1213000" />
+      <workItem from="1612552674471" duration="2277000" />
+      <workItem from="1612571208985" duration="6559000" />
+      <workItem from="1612579061787" duration="3729000" />
+      <workItem from="1612631639527" duration="279000" />
+      <workItem from="1612632003467" duration="6164000" />
+      <workItem from="1612661842918" duration="599000" />
+      <workItem from="1612719076848" duration="2590000" />
     </task>
     <servers />
   </component>
@@ -216,5 +217,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="flex">
+          <url>file://$PROJECT_DIR$/src/com/company/assembleegameclient/ui/options/Options.as</url>
+          <line>857</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -44,7 +44,7 @@ public class Update extends IncomingMessage {
       for (i = newLen; i < curLen; i++)
          FreeList.deleteObject(this.newObjs_[i]);
 
-      this.newObjs_.length = Math.min(newLen,curLen);
+      this.newObjs_.length = Math.min(newLen, curLen);
       while (this.newObjs_.length < newLen)
          this.newObjs_.push(FreeList.newObject(ObjectData) as ObjectData);
 

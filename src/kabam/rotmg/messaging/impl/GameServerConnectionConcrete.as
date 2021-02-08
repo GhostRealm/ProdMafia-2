@@ -176,6 +176,7 @@ import kabam.rotmg.messaging.impl.incoming.TradeRequested;
 import kabam.rotmg.messaging.impl.incoming.TradeStart;
 import kabam.rotmg.messaging.impl.incoming.ForgeUnlockedBlueprints;
 import kabam.rotmg.messaging.impl.incoming.UnlockInformation;
+import kabam.rotmg.messaging.impl.incoming.UnlockNewSlot;
 import kabam.rotmg.messaging.impl.incoming.Update;
 import kabam.rotmg.messaging.impl.incoming.VaultContent;
 import kabam.rotmg.messaging.impl.incoming.VerifyEmail;
@@ -188,6 +189,7 @@ import kabam.rotmg.messaging.impl.outgoing.ActivePetUpdateRequest;
 import kabam.rotmg.messaging.impl.outgoing.AoeAck;
 import kabam.rotmg.messaging.impl.outgoing.Buy;
 import kabam.rotmg.messaging.impl.outgoing.CancelTrade;
+import kabam.rotmg.messaging.impl.outgoing.ChangeAllyShoot;
 import kabam.rotmg.messaging.impl.outgoing.ChangeGuildRank;
 import kabam.rotmg.messaging.impl.outgoing.ChangePetSkin;
 import kabam.rotmg.messaging.impl.outgoing.ChangeTrade;
@@ -776,6 +778,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       serverConnection.sendMessage(_loc3_);
    }
 
+   override public function changeAllyShoot(toggle:int) : void {
+      var pkt:ChangeAllyShoot = this.messages.require(CHANGE_ALLY_SHOOT) as ChangeAllyShoot;
+      pkt.toggle = toggle;
+      serverConnection.sendMessage(pkt);
+   }
+
    override public function queueCancel(objId:int) : void {
       var pkt:QueueCancel = this.messages.require(QUEUE_CANCEL) as QueueCancel;
       pkt.objectId = objId;
@@ -917,6 +925,8 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.map(QUEUE_CANCEL).toMessage(QueueCancel);
       map.map(EXALTATION_REDEEM_INFO).toMessage(ExaltationRedeemInfo);
       map.map(FORGE_RESULT).toMessage(ForgeResult);
+      map.map(CHANGE_ALLY_SHOOT).toMessage(ChangeAllyShoot);
+      map.map(UNLOCK_NEW_SLOT).toMessage(UnlockNewSlot);
       map.map(EXALTATION_BONUS_CHANGED).toMessage(ExaltationBonusChanged).toMethod(this.onExaltationBonusChanged);
       map.map(FORGE_UNLOCKED_BLUEPRINTS).toMessage(ForgeUnlockedBlueprints).toMethod(this.onForgeUnlockedBlueprints);
       map.map(VAULT_CONTENT).toMessage(VaultContent).toMethod(this.onVaultContent);
@@ -1222,6 +1232,8 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       map.unmap(FORGE_RESULT);
       map.unmap(FORGE_UNLOCKED_BLUEPRINTS);
       map.unmap(QUEUE_CANCEL);
+      map.unmap(CHANGE_ALLY_SHOOT);
+      map.unmap(UNLOCK_NEW_SLOT);
    }
 
    private function encryptConnection() : void {
@@ -1386,7 +1398,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
          }
          return;
       }
-      if(_loc2_.objectId_ != this.playerId_ && Parameters.data.disableAllyShoot) {
+      if(_loc2_.objectId_ != this.playerId_) {
          return;
       }
       var _loc4_:Projectile = FreeList.newObject(Projectile) as Projectile;
@@ -1416,13 +1428,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
          if(_loc5_.dead_) {
             return;
          }
-         if(Parameters.data.disableAllyShoot == 1) {
-            return;
-         }
          _loc5_.setAttack(param1.containerType_,param1.angle_);
-         if(Parameters.data.disableAllyShoot == 2) {
-            return;
-         }
          _loc6_ = FreeList.newObject(Projectile) as Projectile;
          _loc4_ = _loc5_ as Player;
          if(_loc4_) {
@@ -1718,7 +1724,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
       if(param1) {
          return true;
       }
-      if(param1.objectId_ != this.playerId_ && param1.props_.isPlayer_ && Parameters.data.disableAllyShoot) {
+      if(param1.objectId_ != this.playerId_ && param1.props_.isPlayer_) {
          return false;
       }
       return true;
